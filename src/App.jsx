@@ -6,7 +6,7 @@ import "./App.css";
 function App() {
   const [count, setCount] = useState(0);
 
-  return <>Thinking Lab</>;
+  return <>Thinking Lab by Saumya</>;
 }
 
 export default App;
