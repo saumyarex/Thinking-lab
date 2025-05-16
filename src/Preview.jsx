@@ -2,6 +2,7 @@ import React from "react";
 import {
   BlogsSection,
   Card,
+  CategoriesCard,
   HeroSection,
   NavBar,
   SearchBar,
@@ -13,6 +14,7 @@ function Preview() {
       <NavBar />
       <HeroSection />
       <SearchBar />
+      <CategoriesCard />
     </div>
   );
 }

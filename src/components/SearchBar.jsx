@@ -2,7 +2,7 @@ import React from "react";
 
 function SearchBar() {
   return (
-    <div className="absolute">
+    <div className="absolute ">
       <input
         type="text"
         placeholder="Search"
