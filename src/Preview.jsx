@@ -6,6 +6,7 @@ import {
   HeroSection,
   NavBar,
   SearchBar,
+  TagsCard,
 } from "./components";
 
 function Preview() {
@@ -15,6 +16,7 @@ function Preview() {
       <HeroSection />
       <SearchBar />
       <CategoriesCard />
+      <TagsCard />
     </div>
   );
 }
