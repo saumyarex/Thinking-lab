@@ -27,7 +27,6 @@ function TagsCard() {
       <ul className="flex flex-wrap w-80">
         {tags.map((tag) => {
           const tagActive = activeTags.includes(tag);
-          console.log(tagActive);
           return (
             <li
               key={tag}

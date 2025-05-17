@@ -3,6 +3,7 @@ import {
   BlogsSection,
   Card,
   CategoriesCard,
+  Footer,
   HeroSection,
   NavBar,
   SearchBar,
@@ -17,6 +18,7 @@ function Preview() {
       <SearchBar />
       <CategoriesCard />
       <TagsCard />
+      <Footer />
     </div>
   );
 }

@@ -5,6 +5,7 @@ import HeroSection from "./HeroSection";
 import SearchBar from "./SearchBar";
 import CategoriesCard from "./CategoriesCard";
 import TagsCard from "./TagsCard";
+import Footer from "./Footer";
 
 export {
   Card,
@@ -14,4 +15,5 @@ export {
   SearchBar,
   CategoriesCard,
   TagsCard,
+  Footer,
 };
