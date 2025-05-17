@@ -3,7 +3,7 @@ import React from "react";
 function Footer() {
   const quickLinks = ["Home", "About us", " Contact Us"];
   return (
-    <div className="bg-[#E2AD28] p-5 relative">
+    <div className="bg-[#E2AD28] p-5 mr-0 w-full">
       <div className="grid md:grid-cols-12 grid-cols-1">
         <div className="md:col-span-6 justify-self-center self-center ">
           <img src="/footelogo.svg" alt="Idea lab logo" className=" h-50" />

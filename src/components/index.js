@@ -6,6 +6,7 @@ import SearchBar from "./SearchBar";
 import CategoriesCard from "./CategoriesCard";
 import TagsCard from "./TagsCard";
 import Footer from "./Footer";
+import NewLattercard from "./NewLattercard";
 
 export {
   Card,
@@ -16,4 +17,5 @@ export {
   CategoriesCard,
   TagsCard,
   Footer,
+  NewLattercard,
 };
