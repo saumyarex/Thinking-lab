@@ -21,7 +21,7 @@ function NavBar() {
   return (
     <nav
       className={`fixed z-50 w-full ${
-        scrolled ? "bg-[#bfb291] shadow-lg" : "bg-transparent"
+        scrolled ? "bg-[#ffffff] shadow-lg" : "bg-transparent"
       }`}
     >
       <div

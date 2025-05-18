@@ -3,7 +3,7 @@ import React from "react";
 function NewLattercard() {
   return (
     <div>
-      <div className=" mt-15 mx-10 rounded-t-2xl bg-[#C35642] grid md:grid-cols-2 grid-cols-1">
+      <div className=" mt-15 md:mx-10 sm:mx-8 mx-5 rounded-t-2xl bg-[#C35642] grid md:grid-cols-2 grid-cols-1">
         <div className="sm:p-20 p-10">
           <h1 className="font-extrabold transform scale-y-105 sm:text-6xl text-4xl mb-5 text-white">
             <span className="md:block">Subscribe to</span>

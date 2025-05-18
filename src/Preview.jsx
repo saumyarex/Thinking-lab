@@ -1,29 +1,11 @@
 import React from "react";
-import {
-  BlogsSection,
-  Card,
-  CategoriesCard,
-  Footer,
-  HeroSection,
-  NavBar,
-  LatestPostSidebar,
-  NewLattercard,
-  SearchBar,
-  TagsCard,
-} from "./components";
+import Home from "./pages/Home";
 
 function Preview() {
   return (
-    <div>
-      <NavBar />
-      <HeroSection />
-      <SearchBar />
-      <CategoriesCard />
-      <TagsCard />
-      <LatestPostSidebar />
-      <NewLattercard />
-      <Footer />
-    </div>
+    <>
+      <Home />
+    </>
   );
 }
 

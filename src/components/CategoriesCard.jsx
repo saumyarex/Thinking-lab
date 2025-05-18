@@ -12,7 +12,7 @@ function CategoriesCard() {
   ];
 
   return (
-    <div className="m-10">
+    <div className="">
       <div
         className="mb-3 font-bold hover:cursor-pointer"
         onClick={() => setCategoryActive(null)}

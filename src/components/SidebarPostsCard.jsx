@@ -2,7 +2,7 @@ import React from "react";
 
 function SidebarPostsCard({ title, date, author, imageSrc, className = "" }) {
   return (
-    <div className={`mt-4 ${className} grid grid-cols-2 w-72 `}>
+    <div className={`mt-4 ${className} grid grid-cols-2 `}>
       {/* Post main image */}
       <div className="w-32 h-32 ">
         <img

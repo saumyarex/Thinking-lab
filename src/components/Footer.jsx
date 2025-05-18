@@ -2,6 +2,7 @@ import React from "react";
 
 function Footer() {
   const quickLinks = ["Home", "About us", " Contact Us"];
+  const date = new Date();
   return (
     <div className="bg-[#E2AD28] p-5 mr-0 w-full">
       <div className="grid md:grid-cols-12 grid-cols-1">
@@ -63,7 +64,7 @@ function Footer() {
         </div>
       </div>
       <p className="text-center mb-5">
-        &copy; 2025 PixelNest Media. All rights reserved.
+        &copy; {date.getFullYear()} PixelNest Media. All rights reserved.
       </p>
     </div>
   );
