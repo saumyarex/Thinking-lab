@@ -30,7 +30,7 @@ function NewLattercard() {
               placeholder="YOUR EMAIL"
               className="rounded-3xl my-5 px-5 py-2 border-1 text-white font-normal border-amber-100 w-50 self-start"
             />
-            <button className="rounded-xl px-5 py-2 bg-[#E2AD28] w-30 self-start">
+            <button className="rounded-xl  px-5 py-2 bg-[#E2AD28] w-30 self-start hover:bg-[#e2c028] hover:cursor-pointer">
               SUBMIT
             </button>
           </form>

@@ -6,6 +6,7 @@ import {
   Footer,
   HeroSection,
   NavBar,
+  LatestPostSidebar,
   NewLattercard,
   SearchBar,
   TagsCard,
@@ -19,6 +20,7 @@ function Preview() {
       <SearchBar />
       <CategoriesCard />
       <TagsCard />
+      <LatestPostSidebar />
       <NewLattercard />
       <Footer />
     </div>

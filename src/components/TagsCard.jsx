@@ -23,7 +23,7 @@ function TagsCard() {
 
   return (
     <div>
-      <h2 className="mb-4 block font-bold">Popular Tags</h2>
+      <h2 className="mb-4 block font-bold">POPULAR TAGS</h2>
       <ul className="flex flex-wrap w-80">
         {tags.map((tag) => {
           const tagActive = activeTags.includes(tag);

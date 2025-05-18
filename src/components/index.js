@@ -7,6 +7,8 @@ import CategoriesCard from "./CategoriesCard";
 import TagsCard from "./TagsCard";
 import Footer from "./Footer";
 import NewLattercard from "./NewLattercard";
+import LatestPostSidebar from "./LatestPostSidebar";
+import SidebarPostsCard from "./SidebarPostsCard";
 
 export {
   Card,
@@ -18,4 +20,6 @@ export {
   TagsCard,
   Footer,
   NewLattercard,
+  LatestPostSidebar,
+  SidebarPostsCard,
 };
