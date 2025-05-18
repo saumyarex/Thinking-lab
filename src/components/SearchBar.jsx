@@ -3,7 +3,7 @@ import React from "react";
 function SearchBar() {
   return (
     <div>
-      <div className="mr-10 relative w-auto">
+      <div className="mr-10 relative ">
         {/* Search Box */}
         <input
           type="text"
@@ -12,7 +12,7 @@ function SearchBar() {
         />
 
         {/* Search logo */}
-        <div className="md:h-11 h-8 bg-[#36648B] hover:bg-[#547da1] w-15 absolute right-0 top-0 py-3.5 px-5 rounded-3xl  hover:cursor-pointer">
+        <div className="md:h-11 h-8 bg-[#36648B] hover:bg-[#547da1] w-15 absolute right-0 top-0 md:py-3.5 py-2 px-5 rounded-3xl  hover:cursor-pointer">
           <svg
             fill="#ffffff"
             height="20px"

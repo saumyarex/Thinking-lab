@@ -2,9 +2,9 @@ import React from "react";
 
 function SidebarPostsCard({ title, date, author, imageSrc, className = "" }) {
   return (
-    <div className={`mt-4 ${className} grid grid-cols-2 `}>
+    <div className={`mt-6 ${className} flex md:flex-wrap gap-2 w-full`}>
       {/* Post main image */}
-      <div className="w-32 h-32 ">
+      <div className="min-w-32 min-h-32 ">
         <img
           src={imageSrc}
           alt={title}
@@ -13,7 +13,7 @@ function SidebarPostsCard({ title, date, author, imageSrc, className = "" }) {
       </div>
 
       {/* Post info */}
-      <div>
+      <div className=" md:w-50 min-w-30 mx-3">
         {/* date */}
         <span className="text-xs">{date} </span>
 
