@@ -13,7 +13,7 @@ function SidebarPostsCard({ title, date, author, imageSrc, className = "" }) {
       </div>
 
       {/* Post info */}
-      <div className=" md:w-50 min-w-30 mx-3">
+      <div className=" md:w-40 min-w-30 mx-3">
         {/* date */}
         <span className="text-xs">{date} </span>
 

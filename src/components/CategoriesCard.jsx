@@ -11,6 +11,17 @@ function CategoriesCard() {
     "Video Production",
   ];
 
+  const handlClick = React.useCallback(
+    (index) => {
+      if (categoryActive === index) {
+        setCategoryActive(null);
+      } else {
+        setCategoryActive(index);
+      }
+    },
+    [categoryActive]
+  );
+
   return (
     <div className="">
       <div
@@ -29,7 +40,7 @@ function CategoriesCard() {
                 ? "text-amber-700 font-medium ml-4"
                 : null
             }`}
-            onClick={() => setCategoryActive(index)}
+            onClick={() => handlClick(index)}
           >
             {categoryActive === index && (
               <svg
