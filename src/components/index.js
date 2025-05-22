@@ -9,8 +9,12 @@ import Footer from "./Footer";
 import NewLattercard from "./NewLattercard";
 import LatestPostSidebar from "./LatestPostSidebar";
 import SidebarPostsCard from "./SidebarPostsCard";
+import Input from "./Input";
+import Button from "./Button";
+import Signup from "./Signup";
 
 export {
+  Button,
   Card,
   BlogsSection,
   NavBar,
@@ -22,4 +26,6 @@ export {
   NewLattercard,
   LatestPostSidebar,
   SidebarPostsCard,
+  Signup,
+  Input,
 };
