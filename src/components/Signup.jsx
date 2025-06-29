@@ -6,10 +6,16 @@ import authServices from "../appwrite/authServices.js";
 import toast, { Toaster } from "react-hot-toast";
 import { LoaderCircle } from "lucide-react";
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { login } from "../store/authSlice.js";
+import { useDispatch } from "react-redux";
 
 function Signup() {
   const [isLoading, setIsLoading] = useState(false);
   const [signUpError, setError] = useState("");
+
+  const naviagte = useNavigate();
+  const dispatch = useDispatch();
 
   const {
     register,
@@ -19,10 +25,35 @@ function Signup() {
 
   const onSubmit = async (data) => {
     try {
+      if (data.password !== data.confirmPassword) {
+        throw new Error("Passwords didn't match . Please check.");
+      }
       setIsLoading(true);
       console.log(data);
+      const userCreated = await authServices.signup(
+        data.username,
+        data.email,
+        data.password
+      );
+      await authServices.createUserProfile(
+        data.firstName,
+        data.lastName,
+        data.username,
+        data.email,
+        data.phoneNo
+      );
+
+      if (userCreated) {
+        const userData = authServices.getCurrentUser();
+        if (userData) {
+          dispatch(login(userData));
+          toast.success("Regeration successfull");
+          naviagte("/");
+        }
+      }
     } catch (error) {
-      setError(error);
+      toast.error(error.message);
+      setError(error.message);
       console.log("Sign up error: ", error);
     } finally {
       setIsLoading(false);
@@ -158,6 +189,7 @@ function Signup() {
           Login
         </p>
       </Link>
+      <Toaster position="bottom-center" />
     </div>
   );
 }
