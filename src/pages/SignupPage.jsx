@@ -1,8 +1,11 @@
-import React from "react";
-import { Link } from "react-router-dom";
+import { Container, Signup } from "../components";
 
-function Signup() {
-  return <div>Signup</div>;
+function SignupPage() {
+  return (
+    <Container>
+      <Signup />
+    </Container>
+  );
 }
 
-export default Signup;
+export default SignupPage;
