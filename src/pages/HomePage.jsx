@@ -11,7 +11,7 @@ import {
   Footer,
 } from "../components";
 
-function Home() {
+function HomePage() {
   return (
     <>
       <NavBar />
@@ -51,4 +51,4 @@ function Home() {
   );
 }
 
-export default Home;
+export default HomePage;
