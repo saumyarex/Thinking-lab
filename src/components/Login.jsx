@@ -5,21 +5,37 @@ import authServices from "../appwrite/authServices.js";
 import toast, { Toaster } from "react-hot-toast";
 import { LoaderCircle } from "lucide-react";
 import { useState } from "react";
+import { login } from "../store/authSlice.js";
+import { useDispatch } from "react-redux";
+import { useNavigate } from "react-router-dom";
 
 function Login() {
   const [isLoading, setIsLoading] = useState(false);
-  const { register, handleSubmit } = useForm();
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm();
+
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const onSubmit = async (data) => {
     try {
       setIsLoading(true);
-      console.log(data);
-      await authServices.login(data.email, data.password);
+      const session = await authServices.login(data.email, data.password);
+      if (session) {
+        const userData = await authServices.getCurrentUser();
+        if (userData) {
+          dispatch(login(userData.userId));
+          navigate("/");
+        }
+      }
 
       toast.success("Login successfully");
     } catch (error) {
       console.log("Login error", error);
-      toast.error("Login failed");
+      toast.error(error.message);
     } finally {
       setIsLoading(false);
     }
@@ -42,15 +58,26 @@ function Login() {
           className="space-y-3 w-full "
           onSubmit={handleSubmit(onSubmit)}
         >
-          <Input {...register("email")} type="email" lable="Email" required />
           <Input
-            {...register("password")}
+            {...register("email", {
+              required: "Required",
+            })}
+            type="email"
+            lable="Email"
+          />
+          {errors.email && (
+            <p className="text-red-500">{errors.email.message}</p>
+          )}
+          <Input
+            {...register("password", {
+              required: "Required",
+            })}
             type="password"
             lable="Password"
-            required
-            pattern="^.{6,}$"
-            title="Password must be atleast six characters"
           />
+          {errors.password && (
+            <p className="text-red-500">{errors.password.message}</p>
+          )}
           <Button type="submit" className="mt-4">
             {isLoading ? <LoaderCircle className="animate-spin" /> : "Login"}
           </Button>
