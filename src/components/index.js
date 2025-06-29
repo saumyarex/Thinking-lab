@@ -12,6 +12,7 @@ import SidebarPostsCard from "./SidebarPostsCard";
 import Input from "./Input";
 import Button from "./Button";
 import Signup from "./Signup";
+import Container from "./Container/Container";
 
 export {
   Button,
@@ -28,4 +29,5 @@ export {
   SidebarPostsCard,
   Signup,
   Input,
+  Container,
 };
