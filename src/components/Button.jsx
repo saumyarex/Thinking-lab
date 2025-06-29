@@ -1,6 +1,6 @@
 import React from "react";
 
-function Button({ children, type, className = "", ...props }) {
+function Button({ children, type = "submit", className = "", ...props }) {
   return (
     <button
       type={type}
