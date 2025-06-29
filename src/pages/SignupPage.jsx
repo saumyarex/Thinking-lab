@@ -2,7 +2,7 @@ import { Container, Signup } from "../components";
 
 function SignupPage() {
   return (
-    <Container className={"flex flex-col justify-center items-center"}>
+    <Container>
       <Signup />
     </Container>
   );
