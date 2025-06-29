@@ -28,11 +28,10 @@ function Login() {
         const userData = await authServices.getCurrentUser();
         if (userData) {
           dispatch(login(userData.userId));
+          toast.success("Login successfully");
           navigate("/");
         }
       }
-
-      toast.success("Login successfully");
     } catch (error) {
       console.log("Login error", error);
       toast.error(error.message);
