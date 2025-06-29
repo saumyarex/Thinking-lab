@@ -5,7 +5,13 @@ import HomePage from "./pages/HomePage.jsx";
 // import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import SignupPage from "./pages/SignupPage.jsx";
 import LoginPage from "./pages/LoginPage.jsx";
+import AddPostPage from "./pages/AddPostPage.jsx";
+import EditPostPage from "./pages/EditPostPage.jsx";
+import EditUserDetailsPage from "./pages/EditUserDetailsPage.jsx";
+import ProfilePage from "./pages/ProfilePage.jsx";
 import { BrowserRouter, Routes, Route } from "react-router";
+import { Provider } from "react-redux";
+import store from "./store/store.js";
 
 // const router = createBrowserRouter([
 //   {
@@ -30,12 +36,18 @@ import { BrowserRouter, Routes, Route } from "react-router";
 
 createRoot(document.getElementById("root")).render(
   <StrictMode>
-    <BrowserRouter>
-      <Routes>
-        <Route index element={<HomePage />} />
-        <Route path="register" element={<SignupPage />} />
-        <Route path="login" element={<LoginPage />} />
-      </Routes>
-    </BrowserRouter>
+    <Provider store={store}>
+      <BrowserRouter>
+        <Routes>
+          <Route index element={<HomePage />} />
+          <Route path="register" element={<SignupPage />} />
+          <Route path="login" element={<LoginPage />} />
+          <Route path="profile" element={<ProfilePage />} />
+          <Route path="user-update" element={<EditUserDetailsPage />} />
+          <Route path="add-post" element={<AddPostPage />} />
+          <Route path="edit-post:postid" element={<EditPostPage />} />
+        </Routes>
+      </BrowserRouter>
+    </Provider>
   </StrictMode>
 );
