@@ -13,6 +13,7 @@ import Input from "./Input";
 import Button from "./Button";
 import Signup from "./Signup";
 import Container from "./Container/Container";
+import Login from "./Login";
 
 export {
   Button,
@@ -30,4 +31,5 @@ export {
   Signup,
   Input,
   Container,
+  Login,
 };
