@@ -16,27 +16,30 @@ class authService {
     this.databases = new Databases(this.client);
   }
 
-  async signup(email, password) {
+  async signup(name, email, password) {
     try {
       const userCreated = await this.account.create(
         ID.unique(),
         email,
-        password
+        password,
+        name
       );
+      console.log("sign user ", userCreated);
       if (userCreated) {
         this.login(email, password);
       }
     } catch (error) {
-      return error;
+      console.log("Sign up error: ", error);
+      throw error;
     }
   }
 
   async login(email, password) {
-    try {
-      return await this.account.createEmailPasswordSession(email, password);
-    } catch (error) {
-      return error;
-    }
+    return await this.account.createEmailPasswordSession(email, password);
+  }
+
+  async getCurrentUser() {
+    return await this.account.get();
   }
 
   async logout() {
@@ -55,6 +58,10 @@ class authService {
     }
   }
 
+  async updatePassword(password) {
+    return await this.account.updatePassword(password);
+  }
+
   async deleteAccount(userID) {
     try {
       return this.account.deleteIdentity(userID);
@@ -63,21 +70,19 @@ class authService {
     }
   }
 
-  async userProfile(name, email, phoneNo) {
-    try {
-      return await this.databases.createDocument(
-        databaseID,
-        userProfileCollectionID,
-        ID.unique(),
-        {
-          name,
-          email,
-          phoneNo,
-        }
-      );
-    } catch (error) {
-      return error;
-    }
+  async createUserProfile(fullName, lastName, username, email, phoneNo) {
+    return await this.databases.createDocument(
+      databaseID,
+      userProfileCollectionID,
+      ID.unique(),
+      {
+        fullName,
+        lastName,
+        username,
+        email,
+        phoneNo,
+      }
+    );
   }
 }
 
