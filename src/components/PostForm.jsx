@@ -1,0 +1,187 @@
+import React from "react";
+import { useForm } from "react-hook-form";
+import { useNavigate } from "react-router-dom";
+import { Input, Button, SelectInput, TagsCard } from "./";
+import { Link } from "react-router-dom";
+import { Toaster } from "react-hot-toast";
+import { useRef } from "react";
+import { Editor } from "@tinymce/tinymce-react";
+
+function PostForm() {
+  const allCategories = [
+    "Design and Branding",
+    "Website Development",
+    "App Development",
+    "Social Media",
+    "Marketing Strategy",
+    "Video Production",
+  ];
+
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+    isLoading,
+  } = useForm();
+
+  async function onSubmit(data) {
+    return data;
+  }
+
+  const editorRef = useRef(null);
+  const log = () => {
+    if (editorRef.current) {
+      console.log(editorRef.current.getContent());
+    }
+  };
+
+  return (
+    <div className="mx-2 mt-5 sm:p-10 p-1">
+      {/* Main heading */}
+      <h1 className="text-2xl sm:text-3xl font-bold  text-center">
+        Upload Your Post
+      </h1>
+
+      <div className="bg-gray-300 h-0.5 mt-3 w-full"></div>
+
+      {/* post uploading form */}
+      <div className="my-5 " onSubmit={handleSubmit(onSubmit)}>
+        <form action="" className="space-y-3 w-full ">
+          <Input
+            type="text"
+            label="Title "
+            placeholder="title"
+            {...register("title", {
+              required: "Required",
+              minLength: {
+                value: 6,
+                message: "Must have atleast 6 characters",
+              },
+            })}
+          />
+          {errors.title && (
+            <p className="text-red-500"> {errors.title.message} </p>
+          )}
+          <Input
+            type="text"
+            label="Slug"
+            placeholder="slug"
+            {...register("slug", {
+              required: "Required",
+              minLength: {
+                value: 5,
+                message: "Must have alteast 5 characters",
+              },
+            })}
+          />
+          {errors.slug && <p className="text-red-500">{errors.slug.message}</p>}
+
+          <label htmlFor="content" className="m-1 p-2 font-medium">
+            Content
+          </label>
+
+          <Editor
+            apiKey={String(import.meta.env.VITE_TinyMCE_API_KEY)}
+            onInit={(_evt, editor) => (editorRef.current = editor)}
+            initialValue="<p>This is the initial content of the editor.</p>"
+            init={{
+              height: 500,
+              menubar: false,
+              plugins: [
+                "advlist",
+                "autolink",
+                "lists",
+                "link",
+                "image",
+                "charmap",
+                "preview",
+                "anchor",
+                "searchreplace",
+                "visualblocks",
+                "code",
+                "fullscreen",
+                "insertdatetime",
+                "media",
+                "table",
+                "code",
+                "help",
+                "wordcount",
+              ],
+              toolbar:
+                "undo redo | blocks | " +
+                "bold italic forecolor | alignleft aligncenter " +
+                "alignright alignjustify | bullist numlist outdent indent | " +
+                "removeformat | help",
+              content_style:
+                "body { font-family:Helvetica,Arial,sans-serif; font-size:14px }",
+            }}
+          />
+
+          <label htmlFor="excrept" className="ml-2 font-medium">
+            Excerpt
+          </label>
+          <textarea
+            id="excrept"
+            placeholder="excerpt"
+            {...register("excerpt", {
+              required: "Required",
+              minLength: {
+                value: 10,
+                message: "Must have alteast 10 characters",
+              },
+            })}
+            rows="4"
+            cols="100"
+            className="border-2 mt-3 border-gray-200 p-3 block w-full rounded-lg"
+          />
+          {errors.excerpt && (
+            <p className="text-red-500">{errors.excerpt.message}</p>
+          )}
+
+          <Input
+            type="file"
+            label="Upload cover image"
+            {...register("slug", {
+              required: "Required",
+            })}
+          />
+          {errors.slug && <p className="text-red-500">{errors.slug.message}</p>}
+
+          <TagsCard />
+
+          <SelectInput
+            name="category"
+            label="Select category"
+            options={allCategories}
+          />
+
+          <SelectInput
+            name="featured"
+            label="Featured"
+            options={["No", "Yes"]}
+            defaultValue="no"
+          />
+
+          <SelectInput
+            name="status"
+            label="Staus"
+            options={["Active", "Not Active"]}
+            defaultValue="active"
+          />
+
+          <Button className="m-5" onClick={log}>
+            Log editor content
+          </Button>
+          <Button>
+            {" "}
+            {isLoading ? <LoaderCircle className="animate-spin" /> : "Upload"}
+          </Button>
+        </form>
+      </div>
+
+      <Toaster position="bottom-center" />
+    </div>
+  );
+}
+
+export default PostForm;
