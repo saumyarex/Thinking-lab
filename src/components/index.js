@@ -14,6 +14,8 @@ import Button from "./Button";
 import Signup from "./Signup";
 import Container from "./Container/Container";
 import Login from "./Login";
+import PostForm from "./PostForm";
+import SelectInput from "./SelectInput";
 
 export {
   Button,
@@ -32,4 +34,6 @@ export {
   Input,
   Container,
   Login,
+  PostForm,
+  SelectInput,
 };

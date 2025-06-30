@@ -1,12 +1,12 @@
 import React from "react";
 
-function Input({ lable, type = "text", className = "", ...props }, ref) {
+function Input({ label, type = "text", className = "", ...props }, ref) {
   const id = React.useId();
   return (
     <div className="w-full">
-      {lable && (
+      {label && (
         <label htmlFor={id} className="m-1 p-2 block font-medium">
-          {lable}
+          {label}
         </label>
       )}
       <input

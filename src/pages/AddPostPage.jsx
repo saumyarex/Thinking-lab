@@ -1,7 +1,12 @@
 import React from "react";
+import { Container, PostForm } from "../components";
 
 function AddPostPage() {
-  return <div>AddPostPage</div>;
+  return (
+    <div>
+      <PostForm />
+    </div>
+  );
 }
 
 export default AddPostPage;
