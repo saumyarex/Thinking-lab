@@ -80,43 +80,6 @@ function PostForm() {
             Content
           </label>
 
-          <Editor
-            apiKey={String(import.meta.env.VITE_TinyMCE_API_KEY)}
-            onInit={(_evt, editor) => (editorRef.current = editor)}
-            initialValue="<p>This is the initial content of the editor.</p>"
-            init={{
-              height: 500,
-              menubar: false,
-              plugins: [
-                "advlist",
-                "autolink",
-                "lists",
-                "link",
-                "image",
-                "charmap",
-                "preview",
-                "anchor",
-                "searchreplace",
-                "visualblocks",
-                "code",
-                "fullscreen",
-                "insertdatetime",
-                "media",
-                "table",
-                "code",
-                "help",
-                "wordcount",
-              ],
-              toolbar:
-                "undo redo | blocks | " +
-                "bold italic forecolor | alignleft aligncenter " +
-                "alignright alignjustify | bullist numlist outdent indent | " +
-                "removeformat | help",
-              content_style:
-                "body { font-family:Helvetica,Arial,sans-serif; font-size:14px }",
-            }}
-          />
-
           <label htmlFor="excrept" className="ml-2 font-medium">
             Excerpt
           </label>
@@ -141,11 +104,21 @@ function PostForm() {
           <Input
             type="file"
             label="Upload cover image"
-            {...register("slug", {
-              required: "Required",
+            {...register("coverImage", {
+              required: "Cover image required",
+              validate: {
+                lessThan2MB: (coverImage) =>
+                  coverImage[0]?.size < 2 * 1024 * 1024 ||
+                  "Cover image larger then 2MB",
+                acceptOnlyJpeg: (coverImage) =>
+                  ["image/jpeg", "image/png"].includes(coverImage[0]?.type) ||
+                  "Only JPG/PNG files are allowed",
+              },
             })}
           />
-          {errors.slug && <p className="text-red-500">{errors.slug.message}</p>}
+          {errors.coverImage && (
+            <p className="text-red-500">{errors.coverImage.message}</p>
+          )}
 
           <TagsCard />
 
@@ -153,6 +126,9 @@ function PostForm() {
             name="category"
             label="Select category"
             options={allCategories}
+            {...register("category", {
+              required: "Select a category",
+            })}
           />
 
           <SelectInput
@@ -160,6 +136,9 @@ function PostForm() {
             label="Featured"
             options={["No", "Yes"]}
             defaultValue="no"
+            {...register("featured", {
+              required: "Required",
+            })}
           />
 
           <SelectInput
@@ -167,6 +146,9 @@ function PostForm() {
             label="Staus"
             options={["Active", "Not Active"]}
             defaultValue="active"
+            {...register("status", {
+              required: "Required",
+            })}
           />
 
           <Button className="m-5" onClick={log}>
