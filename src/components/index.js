@@ -16,7 +16,7 @@ import Container from "./Container/Container";
 import Login from "./Login";
 import PostForm from "./PostForm";
 import SelectInput from "./SelectInput";
-
+import RTE from "./RTE.jsx";
 export {
   Button,
   Card,
@@ -36,4 +36,5 @@ export {
   Login,
   PostForm,
   SelectInput,
+  RTE
 };
