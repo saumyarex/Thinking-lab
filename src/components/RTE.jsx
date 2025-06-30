@@ -3,14 +3,9 @@ import { Controller } from "react-hook-form";
 import { Editor } from "@tinymce/tinymce-react";
 
 function RTE({ label, name, control, defaultValue = "" }) {
-  const id = React.useId();
   return (
     <div>
-      {label && (
-        <label htmlFor={id} className="m-1 mb-4 p-2 font-medium ">
-          {label}{" "}
-        </label>
-      )}
+      {label && <label className="m-1 mb-4 p-2 font-medium ">{label} </label>}
 
       <Controller
         name={name || "content"}
