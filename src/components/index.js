@@ -17,6 +17,7 @@ import Login from "./Login";
 import PostForm from "./PostForm";
 import SelectInput from "./SelectInput";
 import RTE from "./RTE.jsx";
+import TagsInput from "./TagsInput.jsx";
 export {
   Button,
   Card,
@@ -36,5 +37,6 @@ export {
   Login,
   PostForm,
   SelectInput,
-  RTE
+  RTE,
+  TagsInput,
 };
