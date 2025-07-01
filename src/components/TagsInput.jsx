@@ -1,21 +1,7 @@
 import React from "react";
 import { Controller } from "react-hook-form";
 
-function TagsInput({ label, name, control, defaultValue = [], tags }) {
-  //   const [activeTags, setActiveTags] = React.useState([]);
-
-  //   const toggleTags = React.useCallback((tag) => {
-  //     setActiveTags((prev) =>
-  //       prev.includes(tag) ? prev.filter((pre) => pre != tag) : [...prev, tag]
-  //     );
-  //   }, []);
-
-  //   React.useEffect(() => {
-  //     if (defaultValue) {
-  //       setActiveTags(defaultValue);
-  //     }
-  //   }, [defaultValue]);
-
+function TagsInput({ label, name, control, tags }) {
   return (
     <div>
       {label && <label className="m-1 mb-4 p-2 font-medium ">{label} </label>}
@@ -34,7 +20,7 @@ function TagsInput({ label, name, control, defaultValue = [], tags }) {
                     ? activeTags.filter((t) => t !== tag)
                     : [...activeTags, tag];
 
-                  field.onChange(updatedTags); // 🔁 Update RHF state
+                  field.onChange(updatedTags);
                 };
                 return (
                   <button
