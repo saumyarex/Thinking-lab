@@ -1,7 +1,7 @@
 import React from "react";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
-import { Input, Button, SelectInput, TagsCard } from "./";
+import { Input, Button, SelectInput, TagsCard, RTE, TagsInput } from "./";
 import { Link } from "react-router-dom";
 import { Toaster } from "react-hot-toast";
 import { useRef } from "react";
@@ -9,6 +9,7 @@ import { Editor } from "@tinymce/tinymce-react";
 
 function PostForm() {
   const allCategories = [
+    "",
     "Design and Branding",
     "Website Development",
     "App Development",
@@ -17,23 +18,30 @@ function PostForm() {
     "Video Production",
   ];
 
+  const tags = [
+    "design",
+    "branding",
+    "seo",
+    "web developemt",
+    "marketing",
+    "ux design",
+    "app development",
+    "social media",
+    "ui design",
+  ];
+
   const {
     register,
     handleSubmit,
     formState: { errors },
     isLoading,
+    control,
   } = useForm();
 
   async function onSubmit(data) {
-    return data;
+    console.log(data);
+    //return data;
   }
-
-  const editorRef = useRef(null);
-  const log = () => {
-    if (editorRef.current) {
-      console.log(editorRef.current.getContent());
-    }
-  };
 
   return (
     <div className="mx-2 mt-5 sm:p-10 p-1">
@@ -76,9 +84,10 @@ function PostForm() {
           />
           {errors.slug && <p className="text-red-500">{errors.slug.message}</p>}
 
-          <label htmlFor="content" className="m-1 p-2 font-medium">
-            Content
-          </label>
+          <RTE label={"Content"} name={"content"} control={control} />
+          {errors.content && (
+            <p className="text-red-500">{errors.content.message}</p>
+          )}
 
           <label htmlFor="excrept" className="ml-2 font-medium">
             Excerpt
@@ -120,16 +129,23 @@ function PostForm() {
             <p className="text-red-500">{errors.coverImage.message}</p>
           )}
 
-          <TagsCard />
-
+          <TagsInput label={"Tags"} name="tags" control={control} tags={tags} />
+          {errors.tags && <p className="text-red-500">{errors.tags.message}</p>}
           <SelectInput
             name="category"
             label="Select category"
             options={allCategories}
             {...register("category", {
               required: "Select a category",
+              minLength: {
+                value: 1,
+                message: "Select a category",
+              },
             })}
           />
+          {errors.category && (
+            <p className="text-red-500">{errors.category.message}</p>
+          )}
 
           <SelectInput
             name="featured"
@@ -140,6 +156,9 @@ function PostForm() {
               required: "Required",
             })}
           />
+          {errors.featured && (
+            <p className="text-red-500">{errors.featured.message}</p>
+          )}
 
           <SelectInput
             name="status"
@@ -150,14 +169,18 @@ function PostForm() {
               required: "Required",
             })}
           />
+          {errors.status && (
+            <p className="text-red-500">{errors.status.message}</p>
+          )}
 
-          <Button className="m-5" onClick={log}>
-            Log editor content
-          </Button>
-          <Button>
-            {" "}
-            {isLoading ? <LoaderCircle className="animate-spin" /> : "Upload"}
-          </Button>
+          <div className="bg-gray-300 h-0.5 mt-3 w-full"></div>
+
+          <div className="flex justify-center">
+            <Button>
+              {" "}
+              {isLoading ? <LoaderCircle className="animate-spin" /> : "Upload"}
+            </Button>
+          </div>
         </form>
       </div>
 
