@@ -26,7 +26,7 @@ class authService {
       );
       console.log("sign user ", userCreated);
       if (userCreated) {
-        this.login(email, password);
+        return await this.login(email, password);
       }
     } catch (error) {
       console.log("Sign up error: ", error);
@@ -70,13 +70,13 @@ class authService {
     }
   }
 
-  async createUserProfile(fullName, lastName, username, email, phoneNo) {
+  async createUserProfile(firstName, lastName, username, email, phoneNo) {
     return await this.databases.createDocument(
       databaseID,
       userProfileCollectionID,
       ID.unique(),
       {
-        fullName,
+        firstName,
         lastName,
         username,
         email,

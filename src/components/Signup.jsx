@@ -35,7 +35,7 @@ function Signup() {
         data.email,
         data.password
       );
-      await authServices.createUserProfile(
+      const userProfile = await authServices.createUserProfile(
         data.firstName,
         data.lastName,
         data.username,
@@ -43,18 +43,19 @@ function Signup() {
         data.phoneNo
       );
 
-      if (userCreated) {
-        const userData = authServices.getCurrentUser();
+      if (userCreated && userProfile) {
+        const userData = await authServices.getCurrentUser();
+        console.log("user creation current user data", userData);
         if (userData) {
           dispatch(login(userData));
-          toast.success("Regeration successfull");
+          toast.success("Regisration successfull");
           naviagte("/");
         }
       }
     } catch (error) {
       toast.error(error.message);
       setError(error.message);
-      console.log("Sign up error: ", error);
+      console.log("Sign up error on register page: ", error);
     } finally {
       setIsLoading(false);
     }
