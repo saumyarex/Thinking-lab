@@ -8,6 +8,7 @@ import { useState } from "react";
 import { login } from "../store/authSlice.js";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import { EyeClosed, Eye, Mail } from "lucide-react";
 
 function Login() {
   const [isLoading, setIsLoading] = useState(false);
@@ -27,9 +28,11 @@ function Login() {
       if (session) {
         const userData = await authServices.getCurrentUser();
         if (userData) {
-          dispatch(login(userData.userId));
+          dispatch(login(userData.$id));
           toast.success("Login successfully");
-          navigate("/");
+          setTimeout(() => {
+            navigate("/");
+          }, 1000);
         }
       }
     } catch (error) {
@@ -39,6 +42,13 @@ function Login() {
       setIsLoading(false);
     }
   };
+
+  // password visibiliy switch variables
+  const [passwordVisiblity, setPasswordVisiblity] = useState(false);
+
+  function toggleVisibility() {
+    setPasswordVisiblity((prev) => !prev);
+  }
 
   return (
     <div className="border-2 border-gray-600 rounded-lg m-5 p-10">
@@ -63,6 +73,8 @@ function Login() {
             })}
             type="email"
             lable="Email"
+            placeholder="email"
+            rightIcon={<Mail />}
           />
           {errors.email && (
             <p className="text-red-500">{errors.email.message}</p>
@@ -71,9 +83,22 @@ function Login() {
             {...register("password", {
               required: "Required",
             })}
-            type="password"
+            type={passwordVisiblity ? "text" : "password"}
             lable="Password"
+            placeholder="password"
+            className="relative"
+            rightIcon={
+              passwordVisiblity ? (
+                <EyeClosed
+                  onClick={toggleVisibility}
+                  className="cursor-pointer"
+                />
+              ) : (
+                <Eye onClick={toggleVisibility} className="cursor-pointer" />
+              )
+            }
           />
+
           {errors.password && (
             <p className="text-red-500">{errors.password.message}</p>
           )}
