@@ -45,7 +45,7 @@ createRoot(document.getElementById("root")).render(
           <Route path="profile" element={<ProfilePage />} />
           <Route path="user-update" element={<EditUserDetailsPage />} />
           <Route path="add-post" element={<AddPostPage />} />
-          <Route path="edit-post:postid" element={<EditPostPage />} />
+          <Route path="edit-post/:postid" element={<EditPostPage />} />
         </Routes>
       </BrowserRouter>
     </Provider>
