@@ -4,10 +4,9 @@ import { useNavigate } from "react-router-dom";
 import { Input, Button, SelectInput, TagsCard, RTE, TagsInput } from "./";
 import { Link } from "react-router-dom";
 import { Toaster } from "react-hot-toast";
-import { useRef } from "react";
 import { Editor } from "@tinymce/tinymce-react";
 
-function PostForm() {
+function PostForm({ post }) {
   const allCategories = [
     "",
     "Design and Branding",
@@ -18,7 +17,7 @@ function PostForm() {
     "Video Production",
   ];
 
-  const tags = [
+  const tagsOption = [
     "design",
     "branding",
     "seo",
@@ -36,9 +35,23 @@ function PostForm() {
     formState: { errors },
     isLoading,
     control,
-  } = useForm();
+    getValues,
+  } = useForm({
+    defaultValues: {
+      title: post?.title || "",
+      slug: post?.slug || "",
+      content: post?.content || "",
+      excerpt: post?.excerpt || "",
+      coverImage: post?.coverImage || "",
+      status: post?.status || "Active",
+      tags: post?.tags || [],
+      category: post?.category || "",
+      isFeatured: post?.isFeatured || "No",
+    },
+  });
 
   async function onSubmit(data) {
+    console.log("Submitted");
     console.log(data);
     //return data;
   }
@@ -53,8 +66,12 @@ function PostForm() {
       <div className="bg-gray-300 h-0.5 mt-3 w-full"></div>
 
       {/* post uploading form */}
-      <div className="my-5 " onSubmit={handleSubmit(onSubmit)}>
-        <form action="" className="space-y-3 w-full ">
+      <div className="my-5 ">
+        <form
+          action=""
+          onSubmit={handleSubmit(onSubmit)}
+          className="space-y-3 w-full "
+        >
           <Input
             type="text"
             label="Title "
@@ -84,7 +101,12 @@ function PostForm() {
           />
           {errors.slug && <p className="text-red-500">{errors.slug.message}</p>}
 
-          <RTE label={"Content"} name={"content"} control={control} />
+          <RTE
+            label={"Content"}
+            name={"content"}
+            control={control}
+            defaultValue={getValues("content")}
+          />
           {errors.content && (
             <p className="text-red-500">{errors.content.message}</p>
           )}
@@ -114,23 +136,32 @@ function PostForm() {
             type="file"
             label="Upload cover image"
             {...register("coverImage", {
-              required: "Cover image required",
+              required: !post ? "Cover image is required" : false,
               validate: {
-                lessThan2MB: (coverImage) =>
-                  coverImage[0]?.size < 2 * 1024 * 1024 ||
-                  "Cover image larger then 2MB",
-                acceptOnlyJpeg: (coverImage) =>
-                  ["image/jpeg", "image/png"].includes(coverImage[0]?.type) ||
+                lessThan2MB: (files) =>
+                  !files?.[0] ||
+                  files?.[0]?.size < 2 * 1024 * 1024 ||
+                  "Cover image must be less than 2MB",
+                acceptOnlyJpegOrPng: (files) =>
+                  !files?.[0] ||
+                  ["image/jpeg", "image/png"].includes(files?.[0]?.type) ||
                   "Only JPG/PNG files are allowed",
               },
             })}
           />
+
           {errors.coverImage && (
             <p className="text-red-500">{errors.coverImage.message}</p>
           )}
 
-          <TagsInput label={"Tags"} name="tags" control={control} tags={tags} />
+          <TagsInput
+            label={"Tags"}
+            name="tags"
+            control={control}
+            tags={tagsOption}
+          />
           {errors.tags && <p className="text-red-500">{errors.tags.message}</p>}
+
           <SelectInput
             name="category"
             label="Select category"
@@ -151,7 +182,6 @@ function PostForm() {
             name="featured"
             label="Featured"
             options={["No", "Yes"]}
-            defaultValue="no"
             {...register("featured", {
               required: "Required",
             })}
@@ -162,9 +192,8 @@ function PostForm() {
 
           <SelectInput
             name="status"
-            label="Staus"
+            label="Status"
             options={["Active", "Not Active"]}
-            defaultValue="active"
             {...register("status", {
               required: "Required",
             })}

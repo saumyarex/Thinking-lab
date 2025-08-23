@@ -4,7 +4,7 @@ import { PostForm } from "../components";
 function EditPostPage() {
   const post = {
     title: "BlockChain",
-    slut: "block-chain",
+    slug: "block-chain",
     content:
       "Blockchain is the digital gold and It will become one of the most values asset in the future",
     excerpt: "The age of digital gold",
