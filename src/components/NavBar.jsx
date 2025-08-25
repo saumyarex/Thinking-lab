@@ -1,9 +1,18 @@
 import React from "react";
+import { Link } from "react-router-dom";
+import { useSelector, useDispatch } from "react-redux";
+import authServices from "../appwrite/authServices";
+import { login, logout } from "../store/authSlice";
+import { Toaster, toast } from "react-hot-toast";
 
 function NavBar() {
   const [authentiction, setAuthentication] = React.useState(false);
   const [menuOption, setMenuOption] = React.useState(true);
   const [scrolled, setScrolled] = React.useState(false);
+  const dispatch = useDispatch();
+  const user = useSelector((state) => state.auth);
+  const userCookie = localStorage.getItem("cookieFallback");
+  const [loading, setLoading] = React.useState(true);
 
   React.useEffect(() => {
     const handleScroll = () => {
@@ -13,10 +22,50 @@ function NavBar() {
         setScrolled(false);
       }
     };
-
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
+
+  React.useEffect(() => {
+    const getCurrentUser = async () => {
+      try {
+        const userData = await authServices.getCurrentUser();
+        if (userData) {
+          dispatch(login(userData?.targets[0].userId));
+        }
+      } catch (error) {
+        console.log("Current User error: ", error);
+        toast.error(error.message);
+      } finally {
+        setLoading(false);
+      }
+    };
+    if (userCookie.length > 2) {
+      getCurrentUser();
+    } else {
+      setLoading(false);
+    }
+  }, [userCookie, dispatch]);
+
+  React.useEffect(() => {
+    setAuthentication(user.status);
+  }, [user]);
+
+  const logoutUser = async () => {
+    try {
+      console.log("Logout clicked");
+      await authServices.logout();
+      dispatch(logout());
+      toast.success("Logout successfully");
+    } catch (error) {
+      console.log("Logout error: ", error);
+      toast.error(error.message);
+    }
+  };
+
+  if (loading) {
+    return null;
+  }
 
   return (
     <nav
@@ -34,38 +83,47 @@ function NavBar() {
         {/* Desktop Navigation */}
         <div className="sm:block hidden">
           <ul className="flex gap-4 grow-0  justify-end items-center mr-10">
-            <li className="hover:cursor-pointer">Home</li>
+            <li className="hover:cursor-pointer">
+              <Link to={"/"}>Home</Link>
+            </li>
             <li className={`${authentiction ? "block" : "hidden"}`}>
               {" "}
-              <button
-                className={`bg-yellow-500 p-2 rounded text-white text-xs hover:cursor-pointer hover:bg-yellow-600`}
-              >
-                Add Blog
-              </button>
+              <Link to={"/add-post"}>
+                <button
+                  className={`bg-yellow-500 p-2 rounded text-white text-xs hover:cursor-pointer hover:bg-yellow-600`}
+                >
+                  Add Blog
+                </button>
+              </Link>
             </li>
             <li className={`${authentiction ? "block" : "hidden"}`}>
               {" "}
               <button
                 className={`bg-yellow-500 p-2 rounded text-white text-xs hover:cursor-pointer hover:bg-yellow-600`}
+                onClick={logoutUser}
               >
                 Logout
               </button>
             </li>
             <li className={`${authentiction ? "hidden" : "block"}`}>
               {" "}
-              <button
-                className={`bg-yellow-500 p-2 rounded text-white text-xs hover:cursor-pointer hover:bg-yellow-600`}
-              >
-                Sign Up
-              </button>
+              <Link to={"/register"}>
+                <button
+                  className={`bg-yellow-500 p-2 rounded text-white text-xs hover:cursor-pointer hover:bg-yellow-600`}
+                >
+                  Sign Up
+                </button>
+              </Link>
             </li>
             <li className={`${authentiction ? "hidden" : "block"}`}>
               {" "}
-              <button
-                className={`bg-yellow-500 p-2 rounded text-white text-xs hover:cursor-pointer hover:bg-yellow-600 `}
-              >
-                Login
-              </button>
+              <Link to={"/login"}>
+                <button
+                  className={`bg-yellow-500 p-2 rounded text-white text-xs hover:cursor-pointer hover:bg-yellow-600 `}
+                >
+                  Login
+                </button>
+              </Link>
             </li>
             <li className={`${authentiction ? "block" : "hidden"}`}>
               <div className="w-2 hover:cursor-pointer">
@@ -178,38 +236,47 @@ function NavBar() {
               menuOption ? "hidden" : "block"
             } flex flex-col gap-2 `}
           >
-            <li className="hover:cursor-pointer">Home</li>
+            <li className="hover:cursor-pointer">
+              <Link to={"/"}>Home</Link>
+            </li>
             <li className={`${authentiction ? "block" : "hidden"}`}>
               {" "}
-              <button
-                className={`bg-yellow-500 p-2 rounded text-white text-xs hover:cursor-pointer hover:bg-yellow-600`}
-              >
-                Add Blog
-              </button>
+              <Link to={"/add-post"}>
+                <button
+                  className={`bg-yellow-500 p-2 rounded text-white text-xs hover:cursor-pointer hover:bg-yellow-600`}
+                >
+                  Add Blog
+                </button>
+              </Link>
             </li>
             <li className={`${authentiction ? "block" : "hidden"}`}>
               {" "}
               <button
                 className={`bg-yellow-500 p-2 rounded text-white text-xs hover:cursor-pointer hover:bg-yellow-600`}
+                onClick={logoutUser}
               >
                 Logout
               </button>
             </li>
             <li className={`${authentiction ? "hidden" : "block"}`}>
               {" "}
-              <button
-                className={`bg-yellow-500 p-2 rounded text-white text-xs hover:cursor-pointer hover:bg-yellow-600`}
-              >
-                Sign Up
-              </button>
+              <Link to={"/register"}>
+                <button
+                  className={`bg-yellow-500 p-2 rounded text-white text-xs hover:cursor-pointer hover:bg-yellow-600`}
+                >
+                  Sign Up
+                </button>
+              </Link>
             </li>
             <li className={`${authentiction ? "hidden" : "block"}`}>
               {" "}
-              <button
-                className={`bg-yellow-500 p-2 rounded text-white text-xs hover:cursor-pointer hover:bg-yellow-600 `}
-              >
-                Login
-              </button>
+              <Link to={"/login"}>
+                <button
+                  className={`bg-yellow-500 p-2 rounded text-white text-xs hover:cursor-pointer hover:bg-yellow-600 `}
+                >
+                  Login
+                </button>
+              </Link>
             </li>
             <li className={`${authentiction ? "block" : "hidden"}`}>
               <div className="w-2 hover:cursor-pointer">
@@ -280,6 +347,7 @@ function NavBar() {
           </ul>
         </div>
       </div>
+      <Toaster position="bottom-center" />
     </nav>
   );
 }
