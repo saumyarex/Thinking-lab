@@ -31,9 +31,7 @@ function Login() {
         if (userData) {
           dispatch(login(userData?.targets[0].userId));
           toast.success("Login successfully");
-          setTimeout(() => {
-            navigate("/");
-          }, 1000);
+          navigate("/");
         }
       }
     } catch (error) {
