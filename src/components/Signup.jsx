@@ -29,7 +29,6 @@ function Signup() {
         throw new Error("Passwords didn't match . Please check.");
       }
       setIsLoading(true);
-      console.log(data);
       const userCreated = await authServices.signup(
         data.username,
         data.email,
@@ -40,14 +39,14 @@ function Signup() {
         data.lastName,
         data.username,
         data.email,
-        data.phoneNo
+        data.phoneNo,
+        userCreated.userId
       );
 
       if (userCreated && userProfile) {
         const userData = await authServices.getCurrentUser();
-        console.log("user creation current user data", userData);
         if (userData) {
-          dispatch(login(userData));
+          dispatch(login(userData?.targets[0].userId));
           toast.success("Regisration successfull");
           naviagte("/");
         }

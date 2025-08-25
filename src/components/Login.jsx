@@ -25,10 +25,11 @@ function Login() {
     try {
       setIsLoading(true);
       const session = await authServices.login(data.email, data.password);
+
       if (session) {
         const userData = await authServices.getCurrentUser();
         if (userData) {
-          dispatch(login(userData.$id));
+          dispatch(login(userData?.targets[0].userId));
           toast.success("Login successfully");
           setTimeout(() => {
             navigate("/");
