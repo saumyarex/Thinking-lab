@@ -25,34 +25,30 @@ class blogPostService {
     slug,
     content,
     excerpt,
-    converImage,
+    coverImage,
     status,
-    author,
+    userId,
     tags,
     category,
     isFeatured,
   }) {
-    try {
-      return await this.database.createDocument(
-        databaseID,
-        blogsDataCollectionId,
-        ID.unique(),
-        {
-          title,
-          slug,
-          content,
-          excerpt,
-          converImage,
-          status,
-          author,
-          tags,
-          category,
-          isFeatured,
-        }
-      );
-    } catch (error) {
-      return error;
-    }
+    return await this.database.createDocument(
+      databaseID,
+      blogsDataCollectionId,
+      ID.unique(),
+      {
+        title,
+        slug,
+        content,
+        excerpt,
+        coverImage,
+        status,
+        userId,
+        tags,
+        category,
+        isFeatured,
+      }
+    );
   }
 
   async postUpdate({
@@ -63,7 +59,7 @@ class blogPostService {
     excerpt,
     converImage,
     status,
-    author,
+    userId,
     tags,
     category,
     isFeatured,
@@ -80,7 +76,7 @@ class blogPostService {
           excerpt,
           converImage,
           status,
-          author,
+          userId,
           tags,
           category,
           isFeatured,
@@ -121,6 +117,14 @@ class blogPostService {
     } catch (error) {
       return error;
     }
+  }
+
+  async uploadImage(file) {
+    return await this.bucket.createFile(bucketID, ID.unique(), file);
+  }
+
+  async deleteImage(fileId) {
+    return await this.bucket.deleteFile(bucketID, fileId);
   }
 }
 
