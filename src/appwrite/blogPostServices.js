@@ -119,6 +119,10 @@ class blogPostService {
     return await this.bucket.createFile(bucketID, ID.unique(), file);
   }
 
+  async getImage(fileId) {
+    return this.bucket.getFilePreview(bucketID, fileId);
+  }
+
   async deleteImage(fileId) {
     return await this.bucket.deleteFile(bucketID, fileId);
   }
