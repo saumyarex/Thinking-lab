@@ -96,15 +96,11 @@ class blogPostService {
   }
 
   async getPost(id) {
-    try {
-      return await this.database.getDocument(
-        databaseID,
-        blogsDataCollectionId,
-        id
-      );
-    } catch (error) {
-      return error;
-    }
+    return await this.database.getDocument(
+      databaseID,
+      blogsDataCollectionId,
+      id
+    );
   }
 
   async getListOfPosts(pageNo) {
