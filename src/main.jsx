@@ -12,6 +12,7 @@ import ProfilePage from "./pages/ProfilePage.jsx";
 import { BrowserRouter, Routes, Route } from "react-router";
 import { Provider } from "react-redux";
 import store from "./store/store.js";
+import ReadPostPage from "./pages/ReadPostPage.jsx";
 
 // const router = createBrowserRouter([
 //   {
@@ -46,6 +47,7 @@ createRoot(document.getElementById("root")).render(
           <Route path="user-update" element={<EditUserDetailsPage />} />
           <Route path="add-post" element={<AddPostPage />} />
           <Route path="edit-post/:postid" element={<EditPostPage />} />
+          <Route path="post/:post-slug" element={<ReadPostPage />} />
         </Routes>
       </BrowserRouter>
     </Provider>
