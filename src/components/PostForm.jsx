@@ -1,12 +1,17 @@
-import React from "react";
+import { useCallback, useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import { Input, Button, SelectInput, TagsCard, RTE, TagsInput } from "./";
-import { Link } from "react-router-dom";
-import { Toaster } from "react-hot-toast";
-import { Editor } from "@tinymce/tinymce-react";
+import toast, { Toaster } from "react-hot-toast";
+import authServices from "../appwrite/authServices";
+import { login } from "../store/authSlice";
+import { useDispatch, useSelector } from "react-redux";
+import blogPostServices from "../appwrite/blogPostServices";
+import { LoaderCircle } from "lucide-react";
 
 function PostForm({ post }) {
+  const navigate = useNavigate();
+
   const allCategories = [
     "",
     "Design and Branding",
@@ -33,9 +38,10 @@ function PostForm({ post }) {
     register,
     handleSubmit,
     formState: { errors },
-    isLoading,
     control,
     getValues,
+    setValue,
+    watch,
   } = useForm({
     defaultValues: {
       title: post?.title || "",
@@ -50,17 +56,96 @@ function PostForm({ post }) {
     },
   });
 
+  const dispatch = useDispatch();
+
+  const userId = useSelector((state) => state.auth.userData);
+
+  useEffect(() => {
+    if (!userId) {
+      const fetchUser = async () => {
+        try {
+          const userDetails = await authServices.getCurrentUser();
+          if (userDetails?.targets?.[0]?.userId) {
+            dispatch(login(userDetails.targets[0].userId));
+          } else {
+            toast.error("Unable to fetch user details");
+          }
+        } catch (error) {
+          console.error("Fetching user details error", error);
+          toast.error(error.message || "Failed to fetch user");
+        }
+      };
+      fetchUser();
+    }
+  }, [userId, dispatch]);
+
+  const slugTransformation = useCallback((value) => {
+    if (value && typeof value === "string") {
+      return value
+        .trim()
+        .toLocaleLowerCase()
+        .replace(/[^a-zA-Z\d\s]+/g, "-")
+        .replace(/\s/g, "-");
+    }
+    return "";
+  }, []);
+
+  useEffect(() => {
+    const subscription = watch((value, { name }) => {
+      if (name === "title") {
+        setValue("slug", slugTransformation(value.title), {
+          shouldValidate: true,
+        });
+      }
+    });
+
+    return () => subscription.unsubscribe();
+  }, [setValue, watch, slugTransformation]);
+
+  const [uploading, setUploading] = useState(false);
+
   async function onSubmit(data) {
-    console.log("Submitted");
-    console.log(data);
-    //return data;
+    setUploading(true);
+    try {
+      const uploadImage = await blogPostServices.uploadImage(
+        data.coverImage[0]
+      );
+
+      const coverImageID = uploadImage.$id;
+
+      try {
+        const response = await blogPostServices.postCreation({
+          title: data.title,
+          slug: data.slug,
+          content: data.content,
+          excerpt: data.excerpt,
+          coverImage: coverImageID,
+          status: data.status,
+          userId: userId,
+          tags: data.tags,
+          category: data.category,
+          isFeatured: data.isFeatured,
+        });
+        toast.success("Blog uploaded successfully");
+        navigate(`/post/${response.slug}`);
+      } catch (error) {
+        await blogPostServices.deleteImage(uploadImage.$id);
+        console.log("Uploading error", error);
+        toast.error(error.message);
+      }
+    } catch (error) {
+      console.log("Uploading error", error);
+      toast.error(error.message);
+    } finally {
+      setUploading(false);
+    }
   }
 
   return (
     <div className="mx-2 mt-5 sm:p-10 p-1">
       {/* Main heading */}
       <h1 className="text-2xl sm:text-3xl font-bold  text-center">
-        Upload Your Post
+        {post ? "Edit Your Post" : "Upload Your Post"}
       </h1>
 
       <div className="bg-gray-300 h-0.5 mt-3 w-full"></div>
@@ -98,6 +183,11 @@ function PostForm({ post }) {
                 message: "Must have alteast 5 characters",
               },
             })}
+            onInput={(e) => {
+              setValue("slug", slugTransformation(e.currentTarget.value), {
+                shouldValidate: true,
+              });
+            }}
           />
           {errors.slug && <p className="text-red-500">{errors.slug.message}</p>}
 
@@ -205,9 +295,16 @@ function PostForm({ post }) {
           <div className="bg-gray-300 h-0.5 mt-3 w-full"></div>
 
           <div className="flex justify-center">
-            <Button>
+            <Button className="flex">
               {" "}
-              {isLoading ? <LoaderCircle className="animate-spin" /> : "Upload"}
+              {uploading ? (
+                <>
+                  Uploading ...
+                  <LoaderCircle className="animate-spin" />
+                </>
+              ) : (
+                "Upload"
+              )}
             </Button>
           </div>
         </form>
