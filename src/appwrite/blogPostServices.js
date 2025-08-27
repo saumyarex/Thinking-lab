@@ -51,40 +51,13 @@ class blogPostService {
     );
   }
 
-  async postUpdate({
-    id,
-    title,
-    slug,
-    content,
-    excerpt,
-    converImage,
-    status,
-    userId,
-    tags,
-    category,
-    isFeatured,
-  }) {
-    try {
-      return await this.database.updateDocument(
-        databaseID,
-        blogsDataCollectionId,
-        id,
-        {
-          title,
-          slug,
-          content,
-          excerpt,
-          converImage,
-          status,
-          userId,
-          tags,
-          category,
-          isFeatured,
-        }
-      );
-    } catch (error) {
-      return error;
-    }
+  async postUpdate(id, newData) {
+    return await this.database.updateDocument(
+      databaseID,
+      blogsDataCollectionId,
+      id,
+      newData
+    );
   }
 
   async deletePost(id) {
