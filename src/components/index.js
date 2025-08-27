@@ -18,6 +18,7 @@ import PostForm from "./PostForm";
 import SelectInput from "./SelectInput";
 import RTE from "./RTE.jsx";
 import TagsInput from "./TagsInput.jsx";
+import ReadPost from "./ReadPost.jsx";
 export {
   Button,
   Card,
@@ -39,4 +40,5 @@ export {
   SelectInput,
   RTE,
   TagsInput,
+  ReadPost,
 };
