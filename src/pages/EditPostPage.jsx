@@ -17,7 +17,6 @@ function EditPostPage() {
     async function getPostDetails(postId) {
       try {
         const response = await blogPostServices.getPost(postId);
-        console.log("Post data", response);
         setPost(response);
         setLoading(false);
       } catch (error) {
