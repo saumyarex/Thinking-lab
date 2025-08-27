@@ -48,7 +48,6 @@ function PostForm({ post }) {
       slug: post?.slug || "",
       content: post?.content || "",
       excerpt: post?.excerpt || "",
-      coverImage: post?.coverImage || "",
       status: post?.status || "Active",
       tags: post?.tags || [],
       category: post?.category || "",
@@ -102,42 +101,105 @@ function PostForm({ post }) {
     return () => subscription.unsubscribe();
   }, [setValue, watch, slugTransformation]);
 
+  // if post exist get image from it's id
+  const [imageId, setImageId] = useState();
+  useEffect(() => {
+    async function getImage(fileId) {
+      try {
+        const response = await blogPostServices.getImage(fileId);
+        console.log("image url", response);
+        setImageId(response.replace("preview", "view"));
+      } catch (error) {
+        console.log("Error fetching image: ", error);
+        toast.error(error.message);
+      }
+    }
+
+    if (!imageId) {
+      if (post) {
+        getImage(post.coverImage);
+      }
+    }
+  }, [imageId, post]);
+
   const [uploading, setUploading] = useState(false);
 
   async function onSubmit(data) {
     setUploading(true);
-    try {
-      const uploadImage = await blogPostServices.uploadImage(
-        data.coverImage[0]
-      );
 
-      const coverImageID = uploadImage.$id;
-
+    if (post) {
+      console.log("New data", data);
       try {
-        const response = await blogPostServices.postCreation({
-          title: data.title,
-          slug: data.slug,
-          content: data.content,
-          excerpt: data.excerpt,
-          coverImage: coverImageID,
-          status: data.status,
-          userId: userId,
-          tags: data.tags,
-          category: data.category,
-          isFeatured: data.isFeatured,
-        });
-        toast.success("Blog uploaded successfully");
+        let newImageId;
+        let newUploadedImage;
+        let response;
+        //if user has given new image upload it
+        if (data.coverImage[0]) {
+          newUploadedImage = await blogPostServices.uploadImage(
+            data.coverImage[0]
+          );
+          newImageId = newUploadedImage.$id;
+        }
+
+        //updating the blog data and if something goes wrong remove the new uploaded image
+        try {
+          response = await blogPostServices.postUpdate(post.$id, {
+            ...data,
+            coverImage: data.coverImage[0] ? newImageId : post.coverImage,
+          });
+        } catch (error) {
+          console.log("Uploading error", error);
+          await blogPostServices.deleteImage(newImageId);
+          toast.error(error.message);
+        }
+
+        if (newUploadedImage && response) {
+          await blogPostServices.deleteImage(post.coverImage);
+        }
+
+        toast.success("Blog updated successfully");
         navigate(`/post/${response.slug}`);
       } catch (error) {
-        await blogPostServices.deleteImage(uploadImage.$id);
+        console.log("Uploading error", error);
+
+        toast.error(error.message);
+      } finally {
+        setUploading(false);
+      }
+    } else {
+      try {
+        const uploadImage = await blogPostServices.uploadImage(
+          data.coverImage[0]
+        );
+
+        const coverImageID = uploadImage.$id;
+
+        try {
+          const response = await blogPostServices.postCreation({
+            title: data.title,
+            slug: data.slug,
+            content: data.content,
+            excerpt: data.excerpt,
+            coverImage: coverImageID,
+            status: data.status,
+            userId: userId,
+            tags: data.tags,
+            category: data.category,
+            isFeatured: data.isFeatured,
+          });
+          toast.success("Blog uploaded successfully");
+          navigate(`/post/${response.slug}`);
+        } catch (error) {
+          await blogPostServices.deleteImage(uploadImage.$id);
+          console.log("Uploading error", error);
+          toast.error(error.message);
+        }
+      } catch (error) {
         console.log("Uploading error", error);
         toast.error(error.message);
+      } finally {
+        setUploading(false);
       }
-    } catch (error) {
-      console.log("Uploading error", error);
-      toast.error(error.message);
-    } finally {
-      setUploading(false);
     }
   }
 
@@ -244,6 +306,12 @@ function PostForm({ post }) {
             <p className="text-red-500">{errors.coverImage.message}</p>
           )}
 
+          {post && (
+            <div>
+              <img src={imageId} alt={post.title} />
+            </div>
+          )}
+
           <TagsInput
             label={"Tags"}
             name="tags"
@@ -269,15 +337,15 @@ function PostForm({ post }) {
           )}
 
           <SelectInput
-            name="featured"
+            name="isFeatured"
             label="Featured"
             options={["No", "Yes"]}
-            {...register("featured", {
+            {...register("isFeatured", {
               required: "Required",
             })}
           />
-          {errors.featured && (
-            <p className="text-red-500">{errors.featured.message}</p>
+          {errors.isFeatured && (
+            <p className="text-red-500">{errors.isFeatured.message}</p>
           )}
 
           <SelectInput
