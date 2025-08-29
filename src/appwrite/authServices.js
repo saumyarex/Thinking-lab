@@ -1,4 +1,4 @@
-import { Client, Account, ID, Databases } from "appwrite";
+import { Client, Account, ID, Databases, Query } from "appwrite";
 import {
   apiEndPoint,
   databaseID,
@@ -97,6 +97,14 @@ class authService {
       databaseID,
       userProfileCollectionID,
       id
+    );
+  }
+
+  async getUserDetailsUsingUserId(id) {
+    return await this.databases.listDocuments(
+      databaseID,
+      userProfileCollectionID,
+      [Query.equal("userId", id)]
     );
   }
 }
