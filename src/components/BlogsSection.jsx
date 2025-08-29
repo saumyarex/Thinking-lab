@@ -1,33 +1,119 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Card } from "./index";
+import toast from "react-hot-toast";
+import blogPostServices from "../appwrite/blogPostServices";
+import authServices from "../appwrite/authServices";
 
 function BlogsSection() {
+  const [blogs, setBlogs] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  const formatBlogDate = (isoDate) => {
+    return new Date(isoDate).toLocaleDateString("en-GB", {
+      day: "numeric",
+      month: "long",
+      year: "numeric",
+    });
+  };
+
+  const getImageURL = async (id) => {
+    try {
+      const imageURL = await blogPostServices.getImage(id);
+      return imageURL;
+    } catch (error) {
+      console.log(error);
+      toast.error(error.message);
+      return null;
+    }
+  };
+
+  const getUserDetails = async (id) => {
+    try {
+      return await authServices.getUserDetails(id);
+    } catch (error) {
+      console.log("Error fetching user details: ", error);
+      toast.error(error.message);
+      return null;
+    }
+  };
+
+  useEffect(() => {
+    async function getPosts(pageNo) {
+      try {
+        setLoading(true);
+        const response = await blogPostServices.getListOfPosts(pageNo);
+
+        // Use Promise.all to handle async operations properly
+        const blogsInfo = await Promise.all(
+          response.documents.map(async (blog) => {
+            const userDetail = await getUserDetails(blog.userDetailsID);
+            const imageURL = await getImageURL(blog.coverImage);
+
+            return {
+              id: blog.$id, // Add unique ID for React keys
+              title: blog.title,
+              author: userDetail
+                ? `${userDetail.firstName} ${userDetail.lastName}`
+                : "Unknown Author",
+              date: formatBlogDate(blog.$createdAt),
+              imageSrc: imageURL ? imageURL.replace("preview", "view") : null,
+            };
+          })
+        );
+
+        setBlogs(blogsInfo);
+        setError(null);
+      } catch (error) {
+        console.log("Blogs fetching error: ", error);
+        toast.error(error.message);
+        setError(error.message);
+      } finally {
+        setLoading(false);
+      }
+    }
+
+    getPosts(1);
+  }, []);
+
+  // Loading state
+  if (loading) {
+    return (
+      <div className="flex justify-center items-center p-8">
+        <div className="text-lg">Loading blogs...</div>
+      </div>
+    );
+  }
+
+  // Error state
+  if (error) {
+    return (
+      <div className="flex justify-center items-center p-8">
+        <div className="text-red-500">Error loading blogs: {error}</div>
+      </div>
+    );
+  }
+
+  // Empty state
+  if (blogs.length === 0) {
+    return (
+      <div className="flex justify-center items-center p-8">
+        <div className="text-gray-500">No blogs found.</div>
+      </div>
+    );
+  }
+
   return (
-    <div className="grid sm:grid-cols-2 ">
-      <Card
-        title={"5 Essential Tips for Designing a Memorable Brand Logo"}
-        date={"December 15, 2022"}
-        author={"Jhon Smith"}
-        imageSrc={
-          "https://media.licdn.com/dms/image/v2/D5612AQHfLCnWgAmXsQ/article-cover_image-shrink_600_2000/article-cover_image-shrink_600_2000/0/1700667943141?e=2147483647&v=beta&t=2xJpCOuhFi2j8tLXa9A1MKDXLaYcWiSOl433HrIChGY"
-        }
-      />
-      <Card
-        title={"5 Essential Tips for Designing a Memorable Brand Logo"}
-        date={"December 15, 2022"}
-        author={"Jhon Smith"}
-        imageSrc={
-          "https://media.licdn.com/dms/image/v2/D5612AQHfLCnWgAmXsQ/article-cover_image-shrink_600_2000/article-cover_image-shrink_600_2000/0/1700667943141?e=2147483647&v=beta&t=2xJpCOuhFi2j8tLXa9A1MKDXLaYcWiSOl433HrIChGY"
-        }
-      />
-      <Card
-        title={"5 Essential Tips for Designing a Memorable Brand Logo"}
-        date={"December 15, 2022"}
-        author={"Jhon Smith"}
-        imageSrc={
-          "https://media.licdn.com/dms/image/v2/D5612AQHfLCnWgAmXsQ/article-cover_image-shrink_600_2000/article-cover_image-shrink_600_2000/0/1700667943141?e=2147483647&v=beta&t=2xJpCOuhFi2j8tLXa9A1MKDXLaYcWiSOl433HrIChGY"
-        }
-      />
+    <div className="grid sm:grid-cols-3 ">
+      {blogs.map((blog) => (
+        <Card
+          key={blog.id}
+          title={blog.title}
+          date={blog.date}
+          author={blog.author}
+          imageSrc={blog.imageSrc}
+        />
+      ))}
     </div>
   );
 }
