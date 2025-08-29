@@ -91,6 +91,14 @@ class authService {
       }
     );
   }
+
+  async getUserDetails(id) {
+    return await this.databases.getDocument(
+      databaseID,
+      userProfileCollectionID,
+      id
+    );
+  }
 }
 
 const authServices = new authService();
