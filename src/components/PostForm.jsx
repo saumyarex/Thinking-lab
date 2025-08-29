@@ -57,17 +57,25 @@ function PostForm({ post }) {
 
   const dispatch = useDispatch();
 
-  const userId = useSelector((state) => state.auth.userData);
+  const userInfo = useSelector((state) => state.auth.userData);
 
   useEffect(() => {
-    if (!userId) {
+    if (!userInfo) {
       const fetchUser = async () => {
         try {
-          const userDetails = await authServices.getCurrentUser();
-          if (userDetails?.targets?.[0]?.userId) {
-            dispatch(login(userDetails.targets[0].userId));
-          } else {
-            toast.error("Unable to fetch user details");
+          const userData = await authServices.getCurrentUser();
+          if (userData) {
+            const userDetails = await authServices.getUserDetailsUsingUserId(
+              userData?.targets[0].userId
+            );
+            if (userDetails) {
+              dispatch(
+                login({
+                  userId: userData?.targets[0].userId,
+                  userDetailsId: userDetails.documents[0].$id,
+                })
+              );
+            }
           }
         } catch (error) {
           console.error("Fetching user details error", error);
@@ -76,7 +84,7 @@ function PostForm({ post }) {
       };
       fetchUser();
     }
-  }, [userId, dispatch]);
+  }, [userInfo, dispatch]);
 
   const slugTransformation = useCallback((value) => {
     if (value && typeof value === "string") {
@@ -182,7 +190,8 @@ function PostForm({ post }) {
             excerpt: data.excerpt,
             coverImage: coverImageID,
             status: data.status,
-            userId: userId,
+            userId: userInfo.userId,
+            userDetailsID: userInfo.userDetailsId,
             tags: data.tags,
             category: data.category,
             isFeatured: data.isFeatured,
