@@ -30,6 +30,7 @@ class blogPostService {
     userId,
     tags,
     category,
+    userDetailsID,
     isFeatured,
   }) {
     return await this.database.createDocument(
@@ -44,6 +45,7 @@ class blogPostService {
         coverImage,
         status,
         userId,
+        userDetailsID,
         tags,
         category,
         isFeatured,
