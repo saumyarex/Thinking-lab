@@ -31,7 +31,17 @@ function NavBar() {
       try {
         const userData = await authServices.getCurrentUser();
         if (userData) {
-          dispatch(login(userData?.targets[0].userId));
+          const userDetails = await authServices.getUserDetailsUsingUserId(
+            userData?.targets[0].userId
+          );
+          if (userDetails) {
+            dispatch(
+              login({
+                userId: userData?.targets[0].userId,
+                userDetailsId: userDetails.documents[0].$id,
+              })
+            );
+          }
         }
       } catch (error) {
         console.log("Current User error: ", error);

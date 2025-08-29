@@ -29,9 +29,17 @@ function Login() {
       if (session) {
         const userData = await authServices.getCurrentUser();
         if (userData) {
-          dispatch(login(userData?.targets[0].userId));
-          toast.success("Login successfully");
-          navigate("/");
+          const userDetails = await authServices.getUserDetailsUsingUserId(
+            userData?.targets[0].userId
+          );
+          if (userDetails) {
+            dispatch(
+              login({
+                userId: userData?.targets[0].userId,
+                userDetailsId: userDetails.documents[0].$id,
+              })
+            );
+          }
         }
       }
     } catch (error) {
