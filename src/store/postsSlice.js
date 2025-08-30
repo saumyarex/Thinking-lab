@@ -2,6 +2,8 @@ import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
   postsData: null,
+  tags: null,
+  category: null,
 };
 
 const postsSlice = createSlice({
@@ -9,11 +11,17 @@ const postsSlice = createSlice({
   initialState,
   reducers: {
     fetchPosts: (state, action) => {
-      state.postsData = action.payload.postsData;
+      state.postsData = action.payload;
+    },
+    setTags: (state, action) => {
+      state.tags = action.payload;
+    },
+    setCategory: (state, action) => {
+      state.category = action.payload;
     },
   },
 });
 
-export const { fetchPosts } = postsSlice.actions;
+export const { fetchPosts, setCategory, setTags } = postsSlice.actions;
 
 export default postsSlice.reducer;
