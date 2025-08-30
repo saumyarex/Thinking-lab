@@ -1,7 +1,10 @@
-import React from "react";
+import { useEffect, useState, useCallback } from "react";
+import { setTags } from "../store/postsSlice";
+import { useDispatch } from "react-redux";
 
 function TagsCard() {
-  const [activeTags, setActiveTags] = React.useState([]);
+  const [activeTags, setActiveTags] = useState([]);
+  const dispatch = useDispatch();
 
   const tags = [
     "design",
@@ -15,11 +18,18 @@ function TagsCard() {
     "ui design",
   ];
 
-  const toggleTags = React.useCallback((tag) => {
+  const toggleTags = useCallback((tag) => {
     setActiveTags((prev) =>
       prev.includes(tag) ? prev.filter((pre) => pre != tag) : [...prev, tag]
     );
   }, []);
+
+  useEffect(() => {
+    const updateTags = () => {
+      dispatch(setTags(activeTags));
+    };
+    updateTags();
+  }, [activeTags, dispatch]);
 
   return (
     <div className="mr-4">
