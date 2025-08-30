@@ -8,7 +8,7 @@ function Card({ title, date, author, imageSrc, className = "" }) {
         <img
           src={imageSrc}
           alt={title}
-          className="rounded-2xl shadow-2xl hover:cursor-pointer "
+          className="rounded-2xl shadow-2xl w-lg object-cover hover:cursor-pointer h-48"
         />
       </div>
 
