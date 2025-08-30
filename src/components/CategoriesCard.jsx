@@ -1,15 +1,22 @@
 import React from "react";
-
+import { setCategory } from "../store/postsSlice";
+import { useDispatch } from "react-redux";
 function CategoriesCard() {
+  const disptach = useDispatch();
+
   const [categoryActive, setCategoryActive] = React.useState(null);
-  const allCategories = [
-    "Design and Branding",
-    "Website Development",
-    "App Development",
-    "Social Media",
-    "Marketing Strategy",
-    "Video Production",
-  ];
+
+  const allCategories = React.useMemo(
+    () => [
+      "Design and Branding",
+      "Website Development",
+      "App Development",
+      "Social Media",
+      "Marketing Strategy",
+      "Video Production",
+    ],
+    []
+  );
 
   const handlClick = React.useCallback(
     (index) => {
@@ -21,6 +28,14 @@ function CategoriesCard() {
     },
     [categoryActive]
   );
+
+  React.useEffect(() => {
+    const updateCategory = () => {
+      disptach(setCategory(allCategories[categoryActive]));
+    };
+
+    updateCategory();
+  }, [categoryActive, disptach, allCategories]);
 
   return (
     <div className="">
