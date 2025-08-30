@@ -36,8 +36,8 @@ function HomePage() {
         <div className="md:col-span-3  flex-col gap-20 hidden md:flex ">
           <SearchBar />
           <CategoriesCard />
-          <LatestPostSidebar />
           <TagsCard />
+          <LatestPostSidebar />
         </div>
       </div>
 
