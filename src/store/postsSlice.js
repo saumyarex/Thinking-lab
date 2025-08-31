@@ -4,6 +4,7 @@ const initialState = {
   postsData: null,
   tags: null,
   category: null,
+  searchTerm: null,
 };
 
 const postsSlice = createSlice({
@@ -19,9 +20,13 @@ const postsSlice = createSlice({
     setCategory: (state, action) => {
       state.category = action.payload;
     },
+    setSearchTerm: (state, action) => {
+      state.searchTerm = action.payload;
+    },
   },
 });
 
-export const { fetchPosts, setCategory, setTags } = postsSlice.actions;
+export const { fetchPosts, setCategory, setTags, setSearchTerm } =
+  postsSlice.actions;
 
 export default postsSlice.reducer;
