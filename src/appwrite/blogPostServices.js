@@ -78,16 +78,57 @@ class blogPostService {
     );
   }
 
-  async getListOfPosts(pageNo) {
-    try {
+  async getListOfPosts(pageNo, tags = undefined, category = undefined) {
+    if (tags && category && tags.length > 0) {
+      console.log("tags and category");
+      return await this.database.listDocuments(
+        databaseID,
+        blogsDataCollectionId,
+        [
+          Query.limit(10),
+          Query.offset((pageNo - 1) * 10),
+          Query.equal("tags", tags),
+          Query.equal("category", category),
+        ]
+      );
+    } else if (tags && tags.length > 0) {
+      console.log("tags");
+      return await this.database.listDocuments(
+        databaseID,
+        blogsDataCollectionId,
+        [
+          Query.limit(10),
+          Query.offset((pageNo - 1) * 10),
+          Query.equal("tags", tags),
+        ]
+      );
+    } else if (category) {
+      console.log(" category", category);
+      return await this.database.listDocuments(
+        databaseID,
+        blogsDataCollectionId,
+        [
+          Query.limit(10),
+          Query.offset((pageNo - 1) * 10),
+          Query.equal("category", category),
+        ]
+      );
+    } else {
+      console.log("No tags or category");
       return await this.database.listDocuments(
         databaseID,
         blogsDataCollectionId,
         [Query.limit(10), Query.offset((pageNo - 1) * 10)]
       );
-    } catch (error) {
-      return error;
     }
+  }
+
+  async searchPosts(keyword) {
+    return await this.database.listDocuments(
+      databaseID,
+      blogsDataCollectionId,
+      [Query.search("title", keyword)]
+    );
   }
 
   async uploadImage(file) {
