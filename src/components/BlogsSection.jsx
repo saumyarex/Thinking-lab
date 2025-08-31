@@ -5,11 +5,10 @@ import blogPostServices from "../appwrite/blogPostServices";
 import authServices from "../appwrite/authServices";
 import { Loader2 } from "lucide-react";
 
-function BlogsSection({ tags, category }) {
+function BlogsSection({ tags, category, searchTerm }) {
   const [blogs, setBlogs] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  console.log("Blogs:", blogs);
 
   const formatBlogDate = (isoDate) => {
     return new Date(isoDate).toLocaleDateString("en-GB", {
@@ -24,7 +23,7 @@ function BlogsSection({ tags, category }) {
       const imageURL = await blogPostServices.getImage(id);
       return imageURL;
     } catch (error) {
-      console.log(error);
+      console.log("Error fetching images", error);
       toast.error(error.message);
       return null;
     }
@@ -41,15 +40,15 @@ function BlogsSection({ tags, category }) {
   };
 
   useEffect(() => {
-    async function getPosts(pageNo, tags, category) {
+    async function getPosts(pageNo, tags, category, searchTerm) {
       try {
         setLoading(true);
         const response = await blogPostServices.getListOfPosts(
           pageNo,
           tags,
-          category
+          category,
+          searchTerm
         );
-        console.log("Blogs response:", response);
         if (response) {
           // Use Promise.all to handle async operations properly
           const blogsInfo = await Promise.all(
@@ -83,8 +82,8 @@ function BlogsSection({ tags, category }) {
       }
     }
 
-    getPosts(1, tags, category);
-  }, [category, tags]);
+    getPosts(1, tags, category, searchTerm);
+  }, [category, tags, searchTerm]);
 
   // Loading state
   if (loading) {
