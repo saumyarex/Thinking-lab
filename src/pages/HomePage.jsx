@@ -12,7 +12,7 @@ import {
 } from "../components";
 
 function HomePage() {
-  const { tags, category } = useSelector((state) => state.posts);
+  const { tags, category, searchTerm } = useSelector((state) => state.posts);
   return (
     <>
       <NavBar />
@@ -29,7 +29,11 @@ function HomePage() {
 
       <div className="grid md:grid-cols-12">
         <div className="md:col-span-9 p-5 md:p-10">
-          <BlogsSection tags={tags} category={category} />
+          <BlogsSection
+            tags={tags}
+            category={category}
+            searchTerm={searchTerm}
+          />
         </div>
 
         {/* Desktop sidebar */}
