@@ -3,11 +3,13 @@ import { Card } from "./index";
 import toast from "react-hot-toast";
 import blogPostServices from "../appwrite/blogPostServices";
 import authServices from "../appwrite/authServices";
+import { Loader2 } from "lucide-react";
 
-function BlogsSection() {
+function BlogsSection({ tags, category }) {
   const [blogs, setBlogs] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  console.log("Blogs:", blogs);
 
   const formatBlogDate = (isoDate) => {
     return new Date(isoDate).toLocaleDateString("en-GB", {
@@ -39,30 +41,38 @@ function BlogsSection() {
   };
 
   useEffect(() => {
-    async function getPosts(pageNo) {
+    async function getPosts(pageNo, tags, category) {
       try {
         setLoading(true);
-        const response = await blogPostServices.getListOfPosts(pageNo);
-
-        // Use Promise.all to handle async operations properly
-        const blogsInfo = await Promise.all(
-          response.documents.map(async (blog) => {
-            const userDetail = await getUserDetails(blog.userDetailsID);
-            const imageURL = await getImageURL(blog.coverImage);
-
-            return {
-              id: blog.$id, // Add unique ID for React keys
-              title: blog.title,
-              author: userDetail
-                ? `${userDetail.firstName} ${userDetail.lastName}`
-                : "Unknown Author",
-              date: formatBlogDate(blog.$createdAt),
-              imageSrc: imageURL ? imageURL.replace("preview", "view") : null,
-            };
-          })
+        const response = await blogPostServices.getListOfPosts(
+          pageNo,
+          tags,
+          category
         );
+        console.log("Blogs response:", response);
+        if (response) {
+          // Use Promise.all to handle async operations properly
+          const blogsInfo = await Promise.all(
+            response.documents.map(async (blog) => {
+              const userDetail = await getUserDetails(blog.userDetailsID);
+              const imageURL = await getImageURL(blog.coverImage);
 
-        setBlogs(blogsInfo);
+              return {
+                id: blog.$id, // Add unique ID for React keys
+                title: blog.title,
+                author: userDetail
+                  ? `${userDetail.firstName} ${userDetail.lastName}`
+                  : "Unknown Author",
+                date: formatBlogDate(blog.$createdAt),
+                imageSrc: imageURL ? imageURL.replace("preview", "view") : null,
+              };
+            })
+          );
+          setBlogs(blogsInfo);
+        } else {
+          setBlogs([]);
+        }
+
         setError(null);
       } catch (error) {
         console.log("Blogs fetching error: ", error);
@@ -73,14 +83,16 @@ function BlogsSection() {
       }
     }
 
-    getPosts(1);
-  }, []);
+    getPosts(1, tags, category);
+  }, [category, tags]);
 
   // Loading state
   if (loading) {
     return (
       <div className="flex justify-center items-center p-8">
-        <div className="text-lg">Loading blogs...</div>
+        <div className="text-lg flex">
+          Loading blogs... <Loader2 className="animate-spin" />
+        </div>
       </div>
     );
   }
@@ -103,19 +115,21 @@ function BlogsSection() {
     );
   }
 
-  return (
-    <div className="grid sm:grid-cols-3 ">
-      {blogs.map((blog) => (
-        <Card
-          key={blog.id}
-          title={blog.title}
-          date={blog.date}
-          author={blog.author}
-          imageSrc={blog.imageSrc}
-        />
-      ))}
-    </div>
-  );
+  if (blogs.length > 0) {
+    return (
+      <div className="grid sm:grid-cols-2 md:grid-cols-3">
+        {blogs.map((blog) => (
+          <Card
+            key={blog.id}
+            title={blog.title}
+            date={blog.date}
+            author={blog.author}
+            imageSrc={blog.imageSrc}
+          />
+        ))}
+      </div>
+    );
+  }
 }
 
 export default BlogsSection;
