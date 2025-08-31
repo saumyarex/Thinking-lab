@@ -1,6 +1,35 @@
-import React from "react";
-
+import { useEffect, useState } from "react";
+import blogPostServices from "../appwrite/blogPostServices";
+import { useDispatch } from "react-redux";
+import { setSearchTerm, setCategory, setTags } from "../store/postsSlice";
+/* 
+Key steps
+-keep track of serach term
+-send for search after 2 seconds
+*/
 function SearchBar() {
+  const dispatch = useDispatch();
+  const [search, setSearch] = useState("");
+  const [searchResult, setSearchResult] = useState([]);
+
+  useEffect(() => {
+    const timeoutId = setTimeout(async () => {
+      if (search.trim() !== "") {
+        try {
+          dispatch(setSearchTerm(search));
+          dispatch(setCategory(null));
+          dispatch(setTags(null));
+          const response = await blogPostServices.searchPosts(search);
+          setSearchResult(response.documents);
+        } catch (error) {
+          console.log("Searching error:", error);
+        }
+      }
+    }, 2000);
+
+    return () => clearTimeout(timeoutId);
+  }, [search, dispatch]);
+
   return (
     <div>
       <div className="mr-10 relative ">
@@ -8,11 +37,56 @@ function SearchBar() {
         <input
           type="text"
           placeholder="Search"
-          className="border-black border rounded-3xl md:h-11 h-8 pl-5 w-full overflow-visible "
+          value={search}
+          // onChange={(e) => onChangeofSerachTerm(e)}
+          onChange={(e) => setSearch(e.target.value)}
+          className={`border-black border rounded-3xl md:h-11 h-11 pl-5 w-full overflow-visible ${
+            (searchResult?.length ?? 0) > 0
+              ? "border-b-0 rounded-b-none"
+              : "border-2"
+          }`}
+          onKeyDown={(e) => {
+            if (e.key === "Enter") {
+              dispatch(setSearchTerm(search));
+              dispatch(setCategory(null));
+              dispatch(setTags(null));
+              setSearch("");
+              setSearchResult([]);
+            }
+          }}
         />
 
+        {/* Search result box */}
+        <div className="rounded-3xl border border-t-0 rounded-t-none bg-neutral-100 cursor-pointer">
+          {searchResult.map((result, index) => (
+            <li
+              key={index}
+              className="list-none px-5 py-1 active:bg-neutral-200 rounded-3xl active:border"
+              onClick={() => {
+                setSearch("");
+                setSearchResult([]);
+                dispatch(setSearchTerm(result.title));
+                dispatch(setCategory(null));
+                dispatch(setTags(null));
+              }}
+            >
+              {" "}
+              {result.title} a
+            </li>
+          ))}
+        </div>
+
         {/* Search logo */}
-        <div className="md:h-11 h-8 bg-[#36648B] hover:bg-[#547da1] w-15 absolute right-0 top-0 md:py-3.5 py-2 px-5 rounded-3xl  hover:cursor-pointer">
+        <div
+          className={`md:h-11 h-11 bg-[#36648B] hover:bg-[#547da1] w-15 absolute right-0 top-0 md:py-3.5 py-3.5 px-5 rounded-3xl  hover:cursor-pointer ${
+            (searchResult?.length ?? 0) > 0 ? "rounded-br-none" : ""
+          }`}
+          onClick={() => {
+            dispatch(setSearchTerm(search));
+            setSearch("");
+            setSearchResult([]);
+          }}
+        >
           <svg
             fill="#ffffff"
             height="20px"
