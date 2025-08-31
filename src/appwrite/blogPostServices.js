@@ -78,7 +78,13 @@ class blogPostService {
     );
   }
 
-  async getListOfPosts(pageNo, tags = undefined, category = undefined) {
+  async getListOfPosts(
+    pageNo,
+    tags = undefined,
+    category = undefined,
+    searchTerm = undefined
+  ) {
+    console.log("Search Term:", searchTerm);
     if (tags && category && tags.length > 0) {
       console.log("tags and category");
       return await this.database.listDocuments(
@@ -113,6 +119,9 @@ class blogPostService {
           Query.equal("category", category),
         ]
       );
+    } else if (searchTerm) {
+      console.log("Seraching ...");
+      return await this.searchPosts(searchTerm);
     } else {
       console.log("No tags or category");
       return await this.database.listDocuments(
