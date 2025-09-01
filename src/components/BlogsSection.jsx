@@ -5,10 +5,17 @@ import blogPostServices from "../appwrite/blogPostServices";
 import authServices from "../appwrite/authServices";
 import { Loader2 } from "lucide-react";
 
-function BlogsSection({ tags, category, searchTerm }) {
+function BlogsSection({
+  tags,
+  category,
+  searchTerm,
+  className,
+  userId = undefined,
+}) {
   const [blogs, setBlogs] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  console.log("User id in blogsection:", userId);
 
   const formatBlogDate = (isoDate) => {
     return new Date(isoDate).toLocaleDateString("en-GB", {
@@ -40,14 +47,15 @@ function BlogsSection({ tags, category, searchTerm }) {
   };
 
   useEffect(() => {
-    async function getPosts(pageNo, tags, category, searchTerm) {
+    async function getPosts(pageNo, tags, category, searchTerm, userId) {
       try {
         setLoading(true);
         const response = await blogPostServices.getListOfPosts(
           pageNo,
           tags,
           category,
-          searchTerm
+          searchTerm,
+          userId
         );
         if (response) {
           // Use Promise.all to handle async operations properly
@@ -85,8 +93,8 @@ function BlogsSection({ tags, category, searchTerm }) {
       }
     }
 
-    getPosts(1, tags, category, searchTerm);
-  }, [category, tags, searchTerm]);
+    getPosts(1, tags, category, searchTerm, userId);
+  }, [category, tags, searchTerm, userId]);
 
   // Loading state
   if (loading) {
@@ -119,7 +127,7 @@ function BlogsSection({ tags, category, searchTerm }) {
 
   if (blogs.length > 0) {
     return (
-      <div className="grid sm:grid-cols-2 md:grid-cols-3">
+      <div className={`grid sm:grid-cols-2 md:grid-cols-3 ${className}`}>
         {blogs.map((blog) => (
           <Card
             key={blog.id}
