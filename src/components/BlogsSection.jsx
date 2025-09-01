@@ -59,6 +59,9 @@ function BlogsSection({ tags, category, searchTerm }) {
               return {
                 id: blog.$id, // Add unique ID for React keys
                 title: blog.title,
+                slug: blog.slug,
+                userId: userDetail.$id,
+                username: userDetail.username,
                 author: userDetail
                   ? `${userDetail.firstName} ${userDetail.lastName}`
                   : "Unknown Author",
@@ -120,10 +123,14 @@ function BlogsSection({ tags, category, searchTerm }) {
         {blogs.map((blog) => (
           <Card
             key={blog.id}
+            postId={blog.id}
+            slug={blog.slug}
             title={blog.title}
             date={blog.date}
             author={blog.author}
             imageSrc={blog.imageSrc}
+            userId={blog.userId}
+            username={blog.username}
           />
         ))}
       </div>
