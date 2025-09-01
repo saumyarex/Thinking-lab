@@ -18,7 +18,7 @@ function SearchBar() {
         try {
           dispatch(setSearchTerm(search));
           dispatch(setCategory(null));
-          dispatch(setTags(null));
+          dispatch(setTags([]));
           const response = await blogPostServices.searchPosts(search);
           setSearchResult(response.documents);
         } catch (error) {
@@ -49,7 +49,7 @@ function SearchBar() {
             if (e.key === "Enter") {
               dispatch(setSearchTerm(search));
               dispatch(setCategory(null));
-              dispatch(setTags(null));
+              dispatch(setTags([]));
               setSearch("");
               setSearchResult([]);
             }
@@ -67,7 +67,7 @@ function SearchBar() {
                 setSearchResult([]);
                 dispatch(setSearchTerm(result.title));
                 dispatch(setCategory(null));
-                dispatch(setTags(null));
+                dispatch(setTags([]));
               }}
             >
               {" "}
