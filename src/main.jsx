@@ -47,7 +47,7 @@ createRoot(document.getElementById("root")).render(
           <Route path="user-update" element={<EditUserDetailsPage />} />
           <Route path="add-post" element={<AddPostPage />} />
           <Route path="edit-post/:postId" element={<EditPostPage />} />
-          <Route path="post/:postId" element={<ReadPostPage />} />
+          <Route path="post/:slug/:postId" element={<ReadPostPage />} />
         </Routes>
       </BrowserRouter>
     </Provider>
