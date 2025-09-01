@@ -43,7 +43,7 @@ createRoot(document.getElementById("root")).render(
           <Route index element={<HomePage />} />
           <Route path="register" element={<SignupPage />} />
           <Route path="login" element={<LoginPage />} />
-          <Route path="profile" element={<ProfilePage />} />
+          <Route path="user/:username/:userId" element={<ProfilePage />} />
           <Route path="user-update" element={<EditUserDetailsPage />} />
           <Route path="add-post" element={<AddPostPage />} />
           <Route path="edit-post/:postId" element={<EditPostPage />} />
