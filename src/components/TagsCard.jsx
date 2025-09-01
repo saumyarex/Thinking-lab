@@ -1,11 +1,11 @@
 import { useEffect, useState, useCallback } from "react";
-import { setTags } from "../store/postsSlice";
+import { setTags, setSearchTerm } from "../store/postsSlice";
 import { useDispatch } from "react-redux";
 
 function TagsCard() {
   const [activeTags, setActiveTags] = useState([]);
   const dispatch = useDispatch();
-
+  console.log("Active tags:", activeTags);
   const tags = [
     "design",
     "branding",
@@ -27,6 +27,7 @@ function TagsCard() {
   useEffect(() => {
     const updateTags = () => {
       dispatch(setTags(activeTags));
+      dispatch(setSearchTerm(null));
     };
     updateTags();
   }, [activeTags, dispatch]);

@@ -1,5 +1,5 @@
 import React from "react";
-import { setCategory } from "../store/postsSlice";
+import { setCategory, setSearchTerm } from "../store/postsSlice";
 import { useDispatch } from "react-redux";
 function CategoriesCard() {
   const disptach = useDispatch();
@@ -32,6 +32,7 @@ function CategoriesCard() {
   React.useEffect(() => {
     const updateCategory = () => {
       disptach(setCategory(allCategories[categoryActive]));
+      disptach(setSearchTerm(null));
     };
 
     updateCategory();
