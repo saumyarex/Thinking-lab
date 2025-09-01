@@ -2,7 +2,7 @@ import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
   postsData: null,
-  tags: null,
+  tags: [],
   category: null,
   searchTerm: null,
 };
