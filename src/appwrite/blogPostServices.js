@@ -82,10 +82,14 @@ class blogPostService {
     pageNo,
     tags = undefined,
     category = undefined,
-    searchTerm = undefined
+    searchTerm = undefined,
+    userId = undefined
   ) {
     console.log("Search Term:", searchTerm);
-    if (tags && category && tags.length > 0) {
+    if (userId) {
+      console.log("Post by User Id", userId);
+      return await this.getListOfPostsByUserId(userId);
+    } else if (tags && category && tags.length > 0) {
       console.log("tags and category");
       return await this.database.listDocuments(
         databaseID,
@@ -137,6 +141,14 @@ class blogPostService {
       databaseID,
       blogsDataCollectionId,
       [Query.search("title", keyword)]
+    );
+  }
+
+  async getListOfPostsByUserId(id) {
+    return await this.database.listDocuments(
+      databaseID,
+      blogsDataCollectionId,
+      [Query.search("userDetailsID", id)]
     );
   }
 
