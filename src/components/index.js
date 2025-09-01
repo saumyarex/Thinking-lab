@@ -19,6 +19,7 @@ import SelectInput from "./SelectInput";
 import RTE from "./RTE.jsx";
 import TagsInput from "./TagsInput.jsx";
 import ReadPost from "./ReadPost.jsx";
+import ProfileHeader from "./ProfileHeader.jsx";
 export {
   Button,
   Card,
@@ -41,4 +42,5 @@ export {
   RTE,
   TagsInput,
   ReadPost,
+  ProfileHeader,
 };
