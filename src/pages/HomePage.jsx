@@ -17,37 +17,42 @@ function HomePage() {
     <>
       <NavBar />
       <HeroSection />
-      {/* mobile screen search bar and tabs */}
-      <div className="md:hidden ml-10 ">
-        <SearchBar />
-      </div>
 
-      <div className="md:hidden m-10 mb-0 flex flex-col gap-5">
-        <TagsCard />
-        <CategoriesCard />
-      </div>
-
-      <div className="grid md:grid-cols-12">
-        <div className="md:col-span-9 p-5 md:p-10">
-          <BlogsSection
-            tags={tags}
-            category={category}
-            searchTerm={searchTerm}
-          />
+      <div className="grid md:grid-cols-12 w-full ">
+        {/* blogs section */}
+        <div className="md:col-span-8 order-2 sm:order-1">
+          <div className=" p-5 md:p-10">
+            <BlogsSection
+              tags={tags}
+              category={category}
+              searchTerm={searchTerm}
+            />
+          </div>
         </div>
 
-        {/* Desktop sidebar */}
-        <div className="md:col-span-3  flex-col gap-20 hidden md:flex ">
-          <SearchBar />
-          <CategoriesCard />
-          <TagsCard />
+        {/* sidebar stuffs */}
+        <div className="md:col-span-4 order-1 sm:order-2">
+          {/* serach bar */}
+          <div className=" ml-10 ">
+            <SearchBar />
+          </div>
+
+          {/* serach filters */}
+          <div className=" m-10 mb-0 flex flex-col gap-5">
+            <CategoriesCard />
+            <TagsCard />
+          </div>
+
+          {/* latest post sidebar */}
+          <div className="p-10 sm:block hidden ">
+            <LatestPostSidebar />
+          </div>
+        </div>
+
+        {/* latest post sidebar */}
+        <div className="p-10 sm:hidden order-3 ">
           <LatestPostSidebar />
         </div>
-      </div>
-
-      {/* mobile screen latest blog card */}
-      <div className="p-10 md:hidden">
-        <LatestPostSidebar />
       </div>
 
       <NewLattercard />
