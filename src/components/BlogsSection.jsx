@@ -133,7 +133,7 @@ function BlogsSection({
 
   if (blogs.length > 0) {
     return (
-      <div className={`grid sm:grid-cols-2 md:grid-cols-3 ${className}`}>
+      <div className={`flex flex-wrap justify-center ${className}`}>
         {blogs.map((blog) => (
           <Card
             key={blog.id}
@@ -146,6 +146,7 @@ function BlogsSection({
             userId={blog.userId}
             username={blog.username}
             imageId={blog.imageId}
+            className="max-w-sm sm:max-w-3xs lg:max-w-sm w-full"
           />
         ))}
       </div>
