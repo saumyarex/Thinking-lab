@@ -20,7 +20,7 @@ function HomePage() {
 
       <div className="grid md:grid-cols-12 w-full ">
         {/* blogs section */}
-        <div className="md:col-span-8 order-2 sm:order-1">
+        <div className="md:col-span-8 order-2 md:order-1">
           <div className=" p-5 md:p-10">
             <BlogsSection
               tags={tags}
@@ -31,7 +31,7 @@ function HomePage() {
         </div>
 
         {/* sidebar stuffs */}
-        <div className="md:col-span-4 order-1 sm:order-2">
+        <div className="md:col-span-4 order-1 md:order-2">
           {/* serach bar */}
           <div className=" ml-10 ">
             <SearchBar />
