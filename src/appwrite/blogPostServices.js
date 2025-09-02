@@ -63,11 +63,11 @@ class blogPostService {
   }
 
   async deletePost(id) {
-    try {
-      return await this.database.deleteDocument(id);
-    } catch (error) {
-      return error;
-    }
+    return await this.database.deleteDocument(
+      databaseID,
+      blogsDataCollectionId,
+      id
+    );
   }
 
   async getPost(id) {
