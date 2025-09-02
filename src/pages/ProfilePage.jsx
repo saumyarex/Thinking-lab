@@ -1,14 +1,55 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import authServices from "../appwrite/authServices";
-import { BlogsSection, ProfileHeader } from "../components";
+import { BlogsSection, PopUpMenu, ProfileHeader } from "../components";
+import { useSelector, useDispatch } from "react-redux";
+import {
+  setDeleteMenuActive,
+  setDeletePostId,
+  setDeleteImageId,
+  setConfirmDelete,
+} from "../store/postsSlice";
+import toast, { Toaster } from "react-hot-toast";
+import blogPostServices from "../appwrite/blogPostServices";
 
 function ProfilePage() {
+  const dispatch = useDispatch();
   const [userDetails, setUserDetails] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [deleting, setDeleting] = useState(false);
+  const { deleteMenuActive, confirmDelete, deletePostId, deleteImageId } =
+    useSelector((state) => state.posts);
+  const { userID } = useParams();
 
-  const { userId } = useParams();
+  useEffect(() => {
+    const deletePost = async (postId, coverImageId) => {
+      try {
+        setDeleting(true);
+        await blogPostServices.deletePost(postId);
+        await blogPostServices.deleteImage(coverImageId);
+        toast.success("Blog deleted successfully");
+        dispatch(setConfirmDelete());
+        dispatch(setDeleteMenuActive());
+        dispatch(setDeletePostId(null));
+        dispatch(setDeleteImageId(null));
+      } catch (error) {
+        console.log("Error deleting blog:", error);
+        toast.error(error.message);
+        dispatch(setConfirmDelete());
+        dispatch(setDeleteMenuActive());
+        dispatch(setDeletePostId(null));
+        dispatch(setDeleteImageId(null));
+      } finally {
+        setDeleting(false);
+      }
+    };
+
+    if (confirmDelete && deleteImageId && deletePostId) {
+      console.log("Post Deleted");
+      deletePost(deletePostId, deleteImageId);
+    }
+  }, [confirmDelete, deletePostId, deleteImageId, dispatch]);
 
   useEffect(() => {
     const getUserDetails = async (id) => {
@@ -38,12 +79,12 @@ function ProfilePage() {
       }
     };
 
-    if (userId) {
-      getUserDetails(userId);
+    if (userID) {
+      getUserDetails(userID);
     } else {
       setError("User id missing");
     }
-  }, [userId]);
+  }, [userID]);
 
   if (loading) {
     return (
@@ -62,9 +103,24 @@ function ProfilePage() {
   }
 
   return (
-    <div className="mx-5">
+    <div className="mx-5 relative">
       <ProfileHeader userDetails={userDetails} />
-      <BlogsSection className={"md:grid-cols-4"} userId={userId} />
+      <BlogsSection className={"md:grid-cols-4"} userID={userID} />
+      <PopUpMenu
+        title={"This action will delete the blog. Are you sure?"}
+        option={"Delete"}
+        active={deleteMenuActive}
+        cancelMethod={() => {
+          dispatch(setDeleteMenuActive());
+          dispatch(setDeletePostId(null));
+          dispatch(setDeleteImageId(null));
+        }}
+        optionMethod={() => {
+          dispatch(setConfirmDelete());
+        }}
+        loading={deleting}
+      />
+      <Toaster position="bottom-center" />
     </div>
   );
 }
