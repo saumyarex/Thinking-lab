@@ -50,12 +50,13 @@ function NavBar() {
         setLoading(false);
       }
     };
-    if (userCookie.length > 2) {
+
+    if (!user.status && userCookie.length > 2) {
       getCurrentUser();
     } else {
       setLoading(false);
     }
-  }, [userCookie, dispatch]);
+  }, [userCookie, user, dispatch]);
 
   React.useEffect(() => {
     setAuthentication(user.status);
