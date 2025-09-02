@@ -4,6 +4,7 @@ import toast from "react-hot-toast";
 import blogPostServices from "../appwrite/blogPostServices";
 import authServices from "../appwrite/authServices";
 import { Loader2 } from "lucide-react";
+import { useSelector } from "react-redux";
 
 function BlogsSection({
   tags,
@@ -12,6 +13,8 @@ function BlogsSection({
   className,
   userId = undefined,
 }) {
+  const { confirmDelete } = useSelector((state) => state.posts);
+
   const [blogs, setBlogs] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -68,6 +71,7 @@ function BlogsSection({
                 id: blog.$id, // Add unique ID for React keys
                 title: blog.title,
                 slug: blog.slug,
+                imageId: blog.coverImage,
                 userId: userDetail.$id,
                 username: userDetail.username,
                 author: userDetail
@@ -93,8 +97,10 @@ function BlogsSection({
       }
     }
 
-    getPosts(1, tags, category, searchTerm, userId);
-  }, [category, tags, searchTerm, userId]);
+    if (!confirmDelete) {
+      getPosts(1, tags, category, searchTerm, userId);
+    }
+  }, [category, tags, searchTerm, userId, confirmDelete]);
 
   // Loading state
   if (loading) {
@@ -139,6 +145,7 @@ function BlogsSection({
             imageSrc={blog.imageSrc}
             userId={blog.userId}
             username={blog.username}
+            imageId={blog.imageId}
           />
         ))}
       </div>
