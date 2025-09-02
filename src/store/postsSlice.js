@@ -5,6 +5,10 @@ const initialState = {
   tags: [],
   category: null,
   searchTerm: null,
+  deleteMenuActive: false,
+  confirmDelete: false,
+  deletePostId: null,
+  deleteImageId: null,
 };
 
 const postsSlice = createSlice({
@@ -23,10 +27,30 @@ const postsSlice = createSlice({
     setSearchTerm: (state, action) => {
       state.searchTerm = action.payload;
     },
+    setDeleteMenuActive: (state) => {
+      state.deleteMenuActive = !state.deleteMenuActive;
+    },
+    setConfirmDelete: (state) => {
+      state.confirmDelete = !state.confirmDelete;
+    },
+    setDeletePostId: (state, action) => {
+      state.deletePostId = action.payload;
+    },
+    setDeleteImageId: (state, action) => {
+      state.deleteImageId = action.payload;
+    },
   },
 });
 
-export const { fetchPosts, setCategory, setTags, setSearchTerm } =
-  postsSlice.actions;
+export const {
+  fetchPosts,
+  setCategory,
+  setTags,
+  setSearchTerm,
+  setDeleteMenuActive,
+  setDeletePostId,
+  setDeleteImageId,
+  setConfirmDelete,
+} = postsSlice.actions;
 
 export default postsSlice.reducer;
