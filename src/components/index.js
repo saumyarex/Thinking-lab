@@ -20,6 +20,8 @@ import RTE from "./RTE.jsx";
 import TagsInput from "./TagsInput.jsx";
 import ReadPost from "./ReadPost.jsx";
 import ProfileHeader from "./ProfileHeader.jsx";
+import PopUpMenu from "./PopUpMenu.jsx";
+
 export {
   Button,
   Card,
@@ -43,4 +45,5 @@ export {
   TagsInput,
   ReadPost,
   ProfileHeader,
+  PopUpMenu,
 };
