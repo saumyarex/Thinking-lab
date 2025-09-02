@@ -136,6 +136,14 @@ class blogPostService {
     }
   }
 
+  async getLatestPosts() {
+    return await this.database.listDocuments(
+      databaseID,
+      blogsDataCollectionId,
+      [Query.limit(3)]
+    );
+  }
+
   async searchPosts(keyword) {
     return await this.database.listDocuments(
       databaseID,
