@@ -21,6 +21,7 @@ import TagsInput from "./TagsInput.jsx";
 import ReadPost from "./ReadPost.jsx";
 import ProfileHeader from "./ProfileHeader.jsx";
 import PopUpMenu from "./PopUpMenu.jsx";
+import Pagination from "./Pagination.jsx";
 
 export {
   Button,
@@ -46,4 +47,5 @@ export {
   ReadPost,
   ProfileHeader,
   PopUpMenu,
+  Pagination,
 };
