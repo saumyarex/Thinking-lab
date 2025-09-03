@@ -14,50 +14,29 @@ import {
 function HomePage() {
   const { tags, category, searchTerm } = useSelector((state) => state.posts);
   return (
-    <>
+    <div className="">
       <NavBar />
       <HeroSection />
-
-      <div className="grid md:grid-cols-12 w-full ">
-        {/* blogs section */}
-        <div className="md:col-span-8 order-2 md:order-1">
-          <div className=" p-5 md:p-10">
-            <BlogsSection
-              tags={tags}
-              category={category}
-              searchTerm={searchTerm}
-            />
-          </div>
+      <div className=" grid md:grid-cols-12 ">
+        <div className="mx-5 space-y-5 order-1 md:order-2 md:col-span-4 lg:col-span-3 ">
+          <SearchBar />
+          <CategoriesCard />
+          <TagsCard />
+          <LatestPostSidebar className="md:block hidden mt-5 " />
         </div>
-
-        {/* sidebar stuffs */}
-        <div className="md:col-span-4 order-1 md:order-2">
-          {/* serach bar */}
-          <div className=" ml-10 ">
-            <SearchBar />
-          </div>
-
-          {/* serach filters */}
-          <div className=" m-10 mb-0 flex flex-col gap-5">
-            <CategoriesCard />
-            <TagsCard />
-          </div>
-
-          {/* latest post sidebar */}
-          <div className="p-10 sm:block hidden ">
-            <LatestPostSidebar />
-          </div>
-        </div>
-
-        {/* latest post sidebar */}
-        <div className="p-10 sm:hidden order-3 ">
-          <LatestPostSidebar />
+        <div className=" order-2 md:order-1 md:col-span-8 lg:col-span-9 ">
+          <BlogsSection
+            tags={tags}
+            category={category}
+            searchTerm={searchTerm}
+          />
         </div>
       </div>
 
+      <LatestPostSidebar className="md:hidden mt-5 px-5" />
       <NewLattercard />
       <Footer />
-    </>
+    </div>
   );
 }
 
