@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from "react";
-import { Card } from "./index";
+import { useEffect, useState } from "react";
+import { Card, Pagination } from "./index";
 import toast from "react-hot-toast";
 import blogPostServices from "../appwrite/blogPostServices";
 import authServices from "../appwrite/authServices";
@@ -133,22 +133,27 @@ function BlogsSection({
 
   if (blogs.length > 0) {
     return (
-      <div className={`flex flex-wrap justify-center ${className}`}>
-        {blogs.map((blog) => (
-          <Card
-            key={blog.id}
-            postId={blog.id}
-            slug={blog.slug}
-            title={blog.title}
-            date={blog.date}
-            author={blog.author}
-            imageSrc={blog.imageSrc}
-            userId={blog.userId}
-            username={blog.username}
-            imageId={blog.imageId}
-            className="max-w-sm sm:max-w-3xs lg:max-w-sm w-full"
-          />
-        ))}
+      <div className="mx-2 space-y-5 flex flex-col items-center w-full">
+        <div
+          className={`grid lg:grid-cols-3 sm:grid-cols-2 gap-x-10 md:gap-x-3  ${className}`}
+        >
+          {blogs.map((blog) => (
+            <Card
+              key={blog.id}
+              postId={blog.id}
+              slug={blog.slug}
+              title={blog.title}
+              date={blog.date}
+              author={blog.author}
+              imageSrc={blog.imageSrc}
+              userId={blog.userId}
+              username={blog.username}
+              imageId={blog.imageId}
+              className="max-w-sm sm:max-w-3xs lg:max-w-sm w-full"
+            />
+          ))}
+        </div>
+        <Pagination />
       </div>
     );
   }

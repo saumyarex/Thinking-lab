@@ -24,7 +24,7 @@ function SidebarPostsCard({
       </Link>
 
       {/* Post info */}
-      <div className=" md:w-40 min-w-30 mx-3">
+      <div className="  min-w-30 mx-3">
         <Link to={`/post/${slug}/${postId}`}>
           {/* date */}
           <span className="text-xs">{date} </span>

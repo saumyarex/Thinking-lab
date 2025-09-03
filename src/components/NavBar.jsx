@@ -80,7 +80,7 @@ function NavBar() {
 
   return (
     <nav
-      className={`fixed z-50 w-full ${
+      className={` w-full ${
         scrolled ? "bg-[#ffffff] shadow-lg" : "bg-transparent"
       }`}
     >

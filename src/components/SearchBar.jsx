@@ -32,7 +32,7 @@ function SearchBar() {
 
   return (
     <div>
-      <div className="mr-10 relative ">
+      <div className=" relative ">
         {/* Search Box */}
         <input
           type="text"

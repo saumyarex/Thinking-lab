@@ -27,14 +27,14 @@ function Card({
   const [isMenuActive, setIsMenuActive] = useState(false);
 
   return (
-    <div className={`m-5 ${className} `}>
+    <div className={`m-1 ${className} `}>
       {/* Post main image */}
       <div className="relative">
         <Link to={`/post/${slug}/${postId}`}>
           <img
             src={imageSrc}
             alt={title}
-            className="rounded-2xl shadow-2xl w-lg object-cover hover:cursor-pointer h-48"
+            className="rounded-2xl shadow-2xl w-xs  object-cover hover:cursor-pointer h-48"
           />
         </Link>
         {userID === userData?.userDetailsId && (

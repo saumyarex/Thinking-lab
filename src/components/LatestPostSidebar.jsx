@@ -3,7 +3,7 @@ import { SidebarPostsCard } from "./index.js";
 import blogPostServices from "../appwrite/blogPostServices.js";
 import authServices from "../appwrite/authServices.js";
 
-function LatestPostSidebar() {
+function LatestPostSidebar({ className }) {
   const [latestPosts, setLatestPosts] = useState([]);
 
   const formatBlogDate = (isoDate) => {
@@ -75,7 +75,7 @@ function LatestPostSidebar() {
   }, []);
 
   return (
-    <div>
+    <div className={`${className}`}>
       <h1 className="font-bold ">LATEST POSTS</h1>
       <div>
         {latestPosts.map((blog) => (
