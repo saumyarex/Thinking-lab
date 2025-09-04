@@ -115,7 +115,6 @@ function PostForm({ post }) {
     async function getImage(fileId) {
       try {
         const response = await blogPostServices.getImage(fileId);
-        console.log("image url", response);
         setImageId(response.replace("preview", "view"));
       } catch (error) {
         console.log("Error fetching image: ", error);
@@ -136,7 +135,6 @@ function PostForm({ post }) {
     setUploading(true);
 
     if (post) {
-      console.log("New data", data);
       try {
         let newImageId;
         let newUploadedImage;
@@ -197,7 +195,7 @@ function PostForm({ post }) {
             isFeatured: data.isFeatured,
           });
           toast.success("Blog uploaded successfully");
-          navigate(`/post/${response.slug}`);
+          navigate(`/post/${response.slug}/${response.$id}`);
         } catch (error) {
           await blogPostServices.deleteImage(uploadImage.$id);
           console.log("Uploading error", error);
@@ -305,7 +303,9 @@ function PostForm({ post }) {
                   "Cover image must be less than 2MB",
                 acceptOnlyJpegOrPng: (files) =>
                   !files?.[0] ||
-                  ["image/jpeg", "image/png"].includes(files?.[0]?.type) ||
+                  ["image/jpeg", "image/png", "image/webp"].includes(
+                    files?.[0]?.type
+                  ) ||
                   "Only JPG/PNG files are allowed",
               },
             })}

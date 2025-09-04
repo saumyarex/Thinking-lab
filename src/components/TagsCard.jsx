@@ -5,7 +5,6 @@ import { useDispatch } from "react-redux";
 function TagsCard() {
   const [activeTags, setActiveTags] = useState([]);
   const dispatch = useDispatch();
-  console.log("Active tags:", activeTags);
   const tags = [
     "design",
     "branding",

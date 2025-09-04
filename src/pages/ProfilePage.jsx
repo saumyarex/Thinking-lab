@@ -46,7 +46,6 @@ function ProfilePage() {
     };
 
     if (confirmDelete && deleteImageId && deletePostId) {
-      console.log("Post Deleted");
       deletePost(deletePostId, deleteImageId);
     }
   }, [confirmDelete, deletePostId, deleteImageId, dispatch]);
@@ -64,7 +63,6 @@ function ProfilePage() {
         setError(null);
 
         const response = await authServices.getUserDetails(id);
-        console.log("User Details after response:", response);
 
         setUserDetails({
           firstName: response.firstName,
@@ -105,7 +103,7 @@ function ProfilePage() {
   return (
     <div className="mx-5 relative">
       <ProfileHeader userDetails={userDetails} />
-      <BlogsSection className={"md:grid-cols-4"} userID={userID} />
+      <BlogsSection className={"md:grid-cols-4"} userId={userID} />
       <PopUpMenu
         title={"This action will delete the blog. Are you sure?"}
         option={"Delete"}

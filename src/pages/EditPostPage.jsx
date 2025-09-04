@@ -11,7 +11,6 @@ function EditPostPage() {
   const [post, setPost] = useState({});
 
   const { postId } = useParams();
-  console.log("Post id", postId);
 
   useEffect(() => {
     async function getPostDetails(postId) {

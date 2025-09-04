@@ -1,7 +1,6 @@
 import React from "react";
 
 function ProfileHeader({ userDetails }) {
-  console.log("userDetails", userDetails);
   return (
     <div className="mt-10 px-5 rounded-lg py-10 bg-[#E2AD28]">
       <div>
