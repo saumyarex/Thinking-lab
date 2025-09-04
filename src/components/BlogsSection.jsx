@@ -6,19 +6,14 @@ import authServices from "../appwrite/authServices";
 import { Loader2 } from "lucide-react";
 import { useSelector } from "react-redux";
 
-function BlogsSection({
-  tags,
-  category,
-  searchTerm,
-  className,
-  userId = undefined,
-}) {
+function BlogsSection({ tags, category, searchTerm, className, userId }) {
   const { confirmDelete } = useSelector((state) => state.posts);
 
   const [blogs, setBlogs] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  console.log("User id in blogsection:", userId);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(1);
 
   const formatBlogDate = (isoDate) => {
     return new Date(isoDate).toLocaleDateString("en-GB", {
@@ -49,6 +44,12 @@ function BlogsSection({
     }
   };
 
+  const handlePageChange = (pageNo) => {
+    if (pageNo >= 1 && pageNo <= totalPages) {
+      setCurrentPage(pageNo);
+    }
+  };
+
   useEffect(() => {
     async function getPosts(pageNo, tags, category, searchTerm, userId) {
       try {
@@ -60,7 +61,14 @@ function BlogsSection({
           searchTerm,
           userId
         );
+
         if (response) {
+          // Set pagination data
+
+          setTotalPages(
+            Math.ceil(response.total / (response.documents?.length || 1))
+          );
+
           // Use Promise.all to handle async operations properly
           const blogsInfo = await Promise.all(
             response.documents.map(async (blog) => {
@@ -85,6 +93,7 @@ function BlogsSection({
           setBlogs(blogsInfo);
         } else {
           setBlogs([]);
+          setTotalPages(1);
         }
 
         setError(null);
@@ -98,9 +107,14 @@ function BlogsSection({
     }
 
     if (!confirmDelete) {
-      getPosts(1, tags, category, searchTerm, userId);
+      getPosts(currentPage, tags, category, searchTerm, userId);
     }
-  }, [category, tags, searchTerm, userId, confirmDelete]);
+  }, [category, tags, searchTerm, userId, confirmDelete, currentPage]);
+
+  // Reset to page 1 when filters change
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [tags, category, searchTerm, userId]);
 
   // Loading state
   if (loading) {
@@ -153,7 +167,11 @@ function BlogsSection({
             />
           ))}
         </div>
-        <Pagination />
+        <Pagination
+          currentPage={currentPage}
+          totalPages={totalPages}
+          onPageChange={handlePageChange}
+        />
       </div>
     );
   }
