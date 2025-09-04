@@ -46,9 +46,20 @@ function Signup() {
       if (userCreated && userProfile) {
         const userData = await authServices.getCurrentUser();
         if (userData) {
-          dispatch(login(userData?.targets[0].userId));
-          toast.success("Regisration successfull");
-          naviagte("/");
+          const userDetails = await authServices.getUserDetailsUsingUserId(
+            userData?.targets[0].userId
+          );
+          if (userDetails) {
+            dispatch(
+              login({
+                userId: userData?.targets[0].userId,
+                userDetailsId: userDetails.documents[0].$id,
+                username: userDetails.documents[0].username,
+              })
+            );
+            toast.success("Regisration successfull");
+            naviagte("/");
+          }
         }
       }
     } catch (error) {

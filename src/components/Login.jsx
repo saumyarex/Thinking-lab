@@ -37,8 +37,11 @@ function Login() {
               login({
                 userId: userData?.targets[0].userId,
                 userDetailsId: userDetails.documents[0].$id,
+                username: userDetails.documents[0].username,
               })
             );
+            toast.success("Login successful");
+            navigate("/");
           }
         }
       }
