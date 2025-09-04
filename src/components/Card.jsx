@@ -37,7 +37,7 @@ function Card({
             className="rounded-2xl shadow-2xl w-xs  object-cover hover:cursor-pointer h-48"
           />
         </Link>
-        {userID === userData?.userDetailsId && (
+        {userID && userData && userID === userData?.userDetailsId && (
           <div className=" bg-gray-200/50  absolute top-0 right-0 rounded-2xl cursor-pointer flex flex-col">
             <EllipsisVertical
               className={`self-end m-2 active:size-7 ${
