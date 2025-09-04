@@ -38,8 +38,6 @@ function LatestPostSidebar({ className }) {
       try {
         const response = await blogPostServices.getLatestPosts();
 
-        console.log("Latest posts:", response.documents);
-
         if (response) {
           // Use Promise.all to handle async operations properly
           const blogsInfo = await Promise.all(
