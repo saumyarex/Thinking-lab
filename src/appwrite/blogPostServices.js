@@ -85,53 +85,50 @@ class blogPostService {
     searchTerm = undefined,
     userId = undefined
   ) {
-    console.log("Search Term:", searchTerm);
     if (userId) {
-      console.log("Post by User Id", userId);
-      return await this.getListOfPostsByUserId(userId);
+      return await this.getListOfPostsByUserId(userId, pageNo);
     } else if (tags && category && tags.length > 0) {
-      console.log("tags and category");
       return await this.database.listDocuments(
         databaseID,
         blogsDataCollectionId,
         [
-          Query.limit(10),
-          Query.offset((pageNo - 1) * 10),
+          Query.limit(9),
+          Query.offset((pageNo - 1) * 9),
           Query.equal("tags", tags),
           Query.equal("category", category),
         ]
       );
     } else if (tags && tags.length > 0) {
-      console.log("tags");
       return await this.database.listDocuments(
         databaseID,
         blogsDataCollectionId,
         [
-          Query.limit(10),
-          Query.offset((pageNo - 1) * 10),
+          Query.limit(9),
+          Query.offset((pageNo - 1) * 9),
           Query.equal("tags", tags),
         ]
       );
     } else if (category) {
-      console.log(" category", category);
       return await this.database.listDocuments(
         databaseID,
         blogsDataCollectionId,
         [
-          Query.limit(10),
-          Query.offset((pageNo - 1) * 10),
+          Query.limit(9),
+          Query.offset((pageNo - 1) * 9),
           Query.equal("category", category),
         ]
       );
     } else if (searchTerm) {
-      console.log("Seraching ...");
-      return await this.searchPosts(searchTerm);
+      return await this.searchPosts(searchTerm, pageNo);
     } else {
-      console.log("No tags or category");
       return await this.database.listDocuments(
         databaseID,
         blogsDataCollectionId,
-        [Query.limit(10), Query.offset((pageNo - 1) * 10)]
+        [
+          Query.orderDesc("$createdAt"),
+          Query.limit(9),
+          Query.offset((pageNo - 1) * 9),
+        ]
       );
     }
   }
@@ -140,23 +137,32 @@ class blogPostService {
     return await this.database.listDocuments(
       databaseID,
       blogsDataCollectionId,
-      [Query.limit(3)]
+      [Query.orderDesc("$createdAt"), Query.limit(3)]
     );
   }
 
-  async searchPosts(keyword) {
+  async searchPosts(keyword, pageNo) {
     return await this.database.listDocuments(
       databaseID,
       blogsDataCollectionId,
-      [Query.search("title", keyword)]
+      [
+        Query.search("title", keyword),
+        Query.limit(9),
+        Query.offset((pageNo - 1) * 9),
+      ]
     );
   }
 
-  async getListOfPostsByUserId(id) {
+  async getListOfPostsByUserId(id, pageNo) {
     return await this.database.listDocuments(
       databaseID,
       blogsDataCollectionId,
-      [Query.search("userDetailsID", id)]
+      [
+        Query.limit(9),
+        Query.offset((pageNo - 1) * 9),
+        Query.orderDesc("$createdAt"),
+        Query.search("userDetailsID", id),
+      ]
     );
   }
 
