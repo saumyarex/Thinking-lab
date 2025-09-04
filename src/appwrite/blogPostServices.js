@@ -5,6 +5,7 @@ import {
   blogsDataCollectionId,
   bucketID,
   databaseID,
+  newsletterSubscriberListCollectionID,
 } from "../config/config";
 
 class blogPostService {
@@ -176,6 +177,16 @@ class blogPostService {
 
   async deleteImage(fileId) {
     return await this.bucket.deleteFile(bucketID, fileId);
+  }
+
+  async subscribeToNewsletter(userDetails) {
+    return true;
+    // return await this.database.createDocument({
+    //   databaseId: databaseID,
+    //   collectionId: newsletterSubscriberListCollectionID,
+    //   documentId: ID.unique(),
+    //   data: userDetails,
+    // });
   }
 }
 
