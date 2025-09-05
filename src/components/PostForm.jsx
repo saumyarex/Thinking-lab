@@ -164,7 +164,7 @@ function PostForm({ post }) {
         }
 
         toast.success("Blog updated successfully");
-        navigate(`/post/${response.slug}`);
+        navigate(`/post/${response.slug}/${response.$id}`);
       } catch (error) {
         console.log("Uploading error", error);
 
