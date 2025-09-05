@@ -11,7 +11,6 @@ function NavBar() {
   const [scrolled, setScrolled] = React.useState(false);
   const dispatch = useDispatch();
   const user = useSelector((state) => state.auth);
-  console.log("User Info:", user);
   const userCookie = localStorage.getItem("cookieFallback");
   const [loading, setLoading] = React.useState(true);
 
@@ -53,7 +52,7 @@ function NavBar() {
       }
     };
 
-    if (!user.status && userCookie.length > 2) {
+    if (!user.status && userCookie?.length > 2) {
       getCurrentUser();
     } else {
       setLoading(false);
@@ -140,7 +139,7 @@ function NavBar() {
             <li className={`${authentiction ? "block" : "hidden"}`}>
               {authentiction && (
                 <Link
-                  to={`/user/${user.userData.username}/${user.userData.userDetailsId}`}
+                  to={`/user/${user.userData?.username}/${user.userData?.userDetailsId}`}
                 >
                   <div className="w-2 hover:cursor-pointer">
                     <svg
