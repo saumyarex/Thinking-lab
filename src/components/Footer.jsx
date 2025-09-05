@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 
 function Footer() {
   const quickLinks = ["Home", "About us", " Contact Us"];
@@ -45,22 +46,30 @@ function Footer() {
       <div className="flex items-center md:justify-start  justify-center mt-10 border-t-2 border-[#ffffff49] mb-2">
         {/* Facebook logo */}
         <div className="w-10 h-10 my-5 mx-2 hover:cursor-pointer ">
-          <img src="/facebook.svg" alt="facebook link" />
+          <Link to={"https://www.facebook.com"}>
+            <img src="/facebook.svg" alt="facebook link" />
+          </Link>
         </div>
 
         {/* Twitter logo */}
         <div className="w-8 h-8 my-5 mx-2 hover:cursor-pointer ">
-          <img src="/twiiter.svg" alt="twitter link" />
+          <Link to={"https://x.com/saumyarex"}>
+            <img src="/twiiter.svg" alt="twitter link" />
+          </Link>
         </div>
 
         {/* github logo */}
         <div className="w-7 h-7 my-5 mx-2 ml-3 hover:cursor-pointer ">
-          <img src="/github.svg" alt="github link" />
+          <Link to={"https://github.com/saumyarex"}>
+            <img src="/github.svg" alt="github link" />
+          </Link>
         </div>
 
         {/* linkedin logo */}
         <div className="w-7 h-7 my-5 mx-2 ml-3  hover:cursor-pointer ">
-          <img src="/linkedln.svg" alt="linkedin link" />
+          <Link to={"https://www.linkedin.com/in/saumya-a0913b171/"}>
+            <img src="/linkedln.svg" alt="linkedin link" />
+          </Link>
         </div>
       </div>
       <p className="text-center mb-5">
