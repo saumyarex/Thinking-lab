@@ -63,11 +63,7 @@ function BlogsSection({ tags, category, searchTerm, className, userId }) {
         );
 
         if (response) {
-          // Set pagination data
-
-          setTotalPages(
-            Math.ceil(response.total / (response.documents?.length || 1))
-          );
+          setTotalPages(Math.ceil(response.total / 9));
 
           // Use Promise.all to handle async operations properly
           const blogsInfo = await Promise.all(
