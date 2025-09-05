@@ -22,6 +22,7 @@ import ReadPost from "./ReadPost.jsx";
 import ProfileHeader from "./ProfileHeader.jsx";
 import PopUpMenu from "./PopUpMenu.jsx";
 import Pagination from "./Pagination.jsx";
+import AuthLayout from "./AuthLayout.jsx";
 
 export {
   Button,
@@ -48,4 +49,5 @@ export {
   ProfileHeader,
   PopUpMenu,
   Pagination,
+  AuthLayout,
 };
