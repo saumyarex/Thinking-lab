@@ -2,7 +2,7 @@ import React from "react";
 
 function ProfileHeader({ userDetails }) {
   return (
-    <div className="mt-10 px-5 rounded-lg py-10 bg-[#E2AD28]">
+    <div className="mt-10 px-5 rounded-lg py-10 mb-10 bg-[#E2AD28]">
       <div>
         <h1 className="sm:text-5xl text-4xl">
           {userDetails.firstName} {userDetails.lastName}
