@@ -52,7 +52,7 @@ IDEA LAB is a full-stack blog-sharing web app built using **React** (frontend) a
 
 ![Footer](./public/footer.jpg)
 
-## 🎥 Video Demo
+## 🎥 Video Demo(https://youtu.be/TkKQ0K8PDYY)
 
 [![Video Demo](./public/homepage.jpg)](https://youtu.be/TkKQ0K8PDYY)
 
